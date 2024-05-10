@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import axiosInstance from './axiosInstance';
 import { useEffect, useState } from "react";
