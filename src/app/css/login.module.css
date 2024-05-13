@@ -1,0 +1,126 @@
+
+.main {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  flex-direction: column-reverse;
+  text-align: center;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.div1{
+  margin-top: 2rem;
+  background-color: rgb(255 255 255 / 0.3);
+  text-align: center;
+  border-radius: 1.5rem;
+}
+
+.textoCia{
+  font-weight: bolder;
+}
+
+.textoCiaD{
+  font-weight: bolder;
+  display: none;
+  margin-top: 0.5rem;
+  
+}
+
+.info{
+  width: 83.333333%;
+  margin: auto;
+  display: none;
+  margin-top: 1rem;
+
+}
+
+.input {
+  background-color: rgba(163, 163, 163, 0.3); /* bg-gray-400 com 30% de opacidade */
+  color: #000; /* text-black */
+  margin-top: 0.75rem; /* mt-3 */
+  width: 100%; /* w-full */
+  padding-top: 0.5rem; /* py-2 */
+  padding-bottom: 0.5rem; /* py-2 */
+  padding-left: 2rem; /* px-8 */
+  padding-right: 2rem; /* px-8 */
+  border-radius: 0.5rem; /* rounded-lg */
+}
+
+.button {
+  background-color: #3B82F6; /* bg-[#3B82F6] */
+  color: #fff; /* text-white */
+  font-weight: bold; /* font-bold */
+  padding-top: 0.5rem; /* py-2 */
+  padding-bottom: 0.5rem; /* py-2 */
+  border-radius: 9999px; /* rounded-full */
+  width: 100%; /* w-full */
+}
+
+.image_container{
+  width: 100vw; /* w-screen */
+  height: auto; /* h-auto */
+  margin: auto; /* m-auto */
+  background-color: #3B82F6; /* bg-[#3B82F6] */
+  padding: 2rem; /* p-8 */
+  margin-top: 1rem; /* mt-4 */
+  border-radius: 1.5rem; /* rounded-3xl */
+}
+
+.textInfo{
+  margin-top: 2rem; /* mt-8 */
+  display: none;
+}
+
+
+@media (min-width: 768px) {
+  .main {
+    flex-direction: row;
+    background-color: #3B82F6;
+    color: white;
+    padding: 0 6rem 6rem 6rem;
+    overflow-y: hidden;
+  }
+
+  .div1{
+    margin-left: 2.5rem;
+    padding: 2rem;
+  }
+  .textoCia{
+    display: none;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  .textoCiaD{
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    display: block;
+  }
+  .info{
+    display: block;
+  }
+  .input{
+    background-color: #fff; /* bg-white */
+    padding-top: 1rem; /* py-4 */
+    padding-bottom: 1rem; /* py-4 */
+    margin-top: 2rem; /* mt-8 */
+  }
+  .button{
+    padding-top: 0.75rem; /* py-3 */
+    padding-bottom: 0.75rem; /* py-3 */
+    width: 75%; /* md:w-9/12 */
+    font-size: 1.25rem; /* md:text-xl */
+    background-color: white;
+    color: #3B82F6;
+  }
+  .image_container{
+    max-width: 50%;
+    margin-top: 2rem;
+  }
+  .textInfo{
+    display: block;
+  }
+}
