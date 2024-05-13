@@ -1,9 +1,42 @@
+"use client"
 import Image from "next/image";
-
+import {useRouter} from "next/navigation";
+import axiosInstance from './axiosInstance';
+import { useEffect, useState } from "react";
 import styles from "../app/css/login.module.css"
 
 export default function Home() {
+  const router = useRouter();
+  const [matricula, setMatricula] = useState("")
+  const [senha, setSenha] = useState("")
 
+
+
+  const handleRedirect = () => {
+    const newMatricula = parseInt(matricula)
+    const data = {
+      matricula: newMatricula,
+      senha: senha
+    };
+  
+  axiosInstance.post('/login', data)
+      .then(response => {
+        localStorage.setItem('token', response.data.TOKEN)
+        localStorage.setItem('nome', response.data.USER)
+        const redirectUrl = response.data.URL; 
+      router.push(redirectUrl); 
+      })
+      .catch(error => {
+          console.error('Erro:', error);
+      });
+  };
+
+useEffect(() => {
+    console.log(typeof(matricula))
+    console.log(typeof(senha))
+    console.log(matricula)
+    console.log(senha)
+}, [matricula, senha])
   return (
     <main className={styles.main}>
       <div className={styles.div1}>
@@ -16,15 +49,15 @@ export default function Home() {
           </div>
           <div>
             <section >
-              <input type="text" placeholder="Matrícla" className={styles.input} />
+              <input type="text" placeholder="Matrícla" className={styles.input} onChange={(e) => setMatricula(e.target.value)}/>
             </section>
             <section>
-              <input type="text" placeholder="Senha" className={styles.input} />
+              <input type="text" placeholder="Senha" className={styles.input} onChange={(e) => setSenha(e.target.value)}/>
             </section>
             <p style={{textAlign: "start", marginTop: "1rem", fontSize: "0.75rem", lineHeight: "1rem", marginLeft: "0.5rem"}}>Esqueceu a senha ?</p>
           </div>
           <div className="md:mt-20 mt-4">
-            <button className={styles.button}>Entrar</button>
+            <button onClick={handleRedirect} className={styles.button}>Entrar</button>
             <p style={{fontSize: "0.75rem", lineHeight: "1rem", marginTop: "1rem"}}>Primeiro Acesso?</p>
           </div>
         </div>
