@@ -1,6 +1,6 @@
 "use client"
 import axiosInstance from '../../../app/axiosInstance'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 const Page = () => {
@@ -10,62 +10,67 @@ const Page = () => {
     const [unidade, setUnidade] = useState("")
     const [turno, setTurno] = useState("")
     const [informacao, setinformacao] = useState("")
-    const [valor_e, setValor_e] = useState("")
-    const [valor_m, setValor_m] = useState("")
-    const [contra_t, setContra_t] = useState("")
-    const [integral, setIntegral] = useState("")
+    const [vai, setVai] = useState(0)
 
-    const handleEnv = () => {
-        if (!image) {
-            console.error("Por favor, selecione uma imagem.");
-            return;
-        }
-    
-        const convertImageToBase64 = (image: Blob) => {
-            return new Promise<string>((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(image);
-                reader.onload = () => {
-                    resolve(reader.result as string);
-                };
-                reader.onerror = error => {
-                    reject(error);
-                };
-            });
-        };
-    
-        convertImageToBase64(image)
-            .then(base64Image => {
-                console.log()
-                const curso = {
-                    matricula: parseInt(matricula),
-                    nome: nome,
-                    unidade: unidade,
-                    turno: turno,
-                    informacao: informacao,
-                    valor_E: parseFloat(valor_e),
-                    valor_M: parseFloat(valor_m),
-                    contra_T: contra_t,
-                    integral: integral,
-                    imagem: base64Image
-                };
-    
-                console.log(curso);
-    
-                axiosInstance.post('/curso', curso)
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                    });
-            })
-            .catch(error => {
-                console.error('Erro ao converter imagem:', error);
-            });
+    const handleVai = () => {
+        setVai(1)
+    }
+
+
+  
+    const convertImageToBase64 = (image: Blob) => {
+        return new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = () => {
+                resolve(reader.result as string);
+            };
+            reader.onerror = error => {
+                reject(error);
+            };
+        });
     };
-    
 
+    const handleEnv = async (base64Image: string) => {
+        try {
+            const curso = {
+                matricula: parseInt(matricula),
+                nome,
+                unidade,
+                turno,
+                informacao,
+                imagem: base64Image
+            };
+
+            const response = await axiosInstance.post('/curso', curso);
+            setMatricula('')
+            setNome('')
+            setUnidade('')
+            setTurno('')
+            const id = response.data.id;
+            window.location.replace(`/pages/curso/${id}`);
+        } catch (error) {
+            console.error('Erro ao criar curso:', error);
+        }
+    };
+
+    useEffect(() => {
+        const handleSubmit = async () => {
+            try {
+                if (!image) {
+                    console.error("Por favor, selecione uma imagem.");
+                    return;
+                }
+
+                const base64Image = await convertImageToBase64(image);
+                await handleEnv(base64Image);
+            } catch (error) {
+                console.error('Erro ao processar a imagem:', error);
+            }
+        };
+
+        handleSubmit();
+    }, [vai]);
   return (
     <div className='pt-8'>
       <div className='w-11/12 md:w-9/12 m-auto h-auto mb-10'>
@@ -80,15 +85,6 @@ const Page = () => {
         <input type="text" placeholder="Unidade" className="bg-gray-400/30 md:bg-white   w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e) => setUnidade(e.target.value)}/>
 
         <input type="text" placeholder="Turno" className="bg-gray-400/30 md:bg-white   w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e) => setTurno(e.target.value)}/>
-        
-        <input type="text" placeholder="Valor Escola" className="bg-gray-400/30 md:bg-white   w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e => setValor_e(e.target.value))}/>
-
-        <input type="text" placeholder="Valor Material" className="bg-gray-400/30 md:bg-white   w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e) => setValor_m(e.target.value)}/>
-
-        <input type="text" placeholder="Contra Turno" className="bg-gray-400/30 md:bg-white   w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e) => setContra_t(e.target.value)}/>
-
-        <input type="text" placeholder="Integral" className="bg-gray-400/30 md:bg-white   w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e) => setIntegral(e.target.value)}/>
-
         </div>
         <section className='mt-10 m-auto w-6/12'>
         {!image ? (
@@ -110,7 +106,7 @@ const Page = () => {
             <textarea placeholder="Informação" rows={10} className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e) => setinformacao(e.target.value)}></textarea>
         </section>
         <section className='mt-10 w-11/12 items-center flex'>
-            <button className='m-auto w-10/12 md:w-4/12 py-3 text-white bg-[#3B82F6] rounded-lg ' onClick={handleEnv}>Criar Curso</button>
+            <button className='m-auto w-10/12 md:w-4/12 py-3 text-white bg-[#3B82F6] rounded-lg ' onClick={handleVai}>Criar Curso</button>
         </section>
 
       </div>

@@ -49,8 +49,9 @@ const Page = () => {
             handleDelete={() => handleDelete(course.id)}
           />
         ))}
-        <PlusIcon link='/pages/cursocreate' />
       </div>
+      <PlusIcon link='/pages/cursocreate' />
+
     </div>
   );
 }

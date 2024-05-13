@@ -1,4 +1,5 @@
 "use client"
+import PlusIcon from '@/src/components/PlusIcon';
 import axiosInstance from '../../../app/axiosInstance';
 import React, { useEffect, useState } from 'react';
 
@@ -14,7 +15,7 @@ const Page = () => {
   const [material, setMaterial] = useState();
 
   useEffect(() => {
-    axiosInstance.get('/cursos')
+    axiosInstance.get('/valores')
       .then(response => {
         setData(response.data);
       })
@@ -106,6 +107,8 @@ const Page = () => {
       <div className='w-12/12 md:w-12/12 m-auto h-auto mb-10 md:mt-40 flex'>
         <button className='m-auto w-10/12 md:w-4/12 py-3 text-white bg-[#3B82F6] rounded-lg' onClick={handleCalculate}>Calcular</button>
       </div>
+      <PlusIcon link='/pages/calculadora/add' />
+
     </div>
   );
 };
