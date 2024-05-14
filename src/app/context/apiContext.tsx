@@ -1,26 +1,26 @@
 "use client"
-import React, { createContext, useContext, useState, ReactNode } from "react"
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
-interface props {
-    token : string;
+interface Props {
+    token: string;
     setToken: (value: string) => void;
 }
 
-const apiContext = createContext<props | undefined>(undefined);
+const ApiContext = createContext<Props | undefined>(undefined);
 
-export const ctx = () => {
-    const context = useContext(apiContext);
+export const useCtx = () => {
+    const context = useContext(ApiContext);
     if (!context) {
-        throw new Error("apiContext deve ser usado dentro de um provedor ApiProvider");
+        throw new Error("useCtx deve ser usado dentro de um provedor ApiProvider");
     }
     return context;
 };
 
-export const ApiProvider: React.FC<{children: ReactNode}> = ({ children }) => {
-    const [token, setToken] = useState('')
-    return(
-        <apiContext.Provider value={{token, setToken}}>
+export const ApiProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [token, setToken] = useState('');
+    return (
+        <ApiContext.Provider value={{ token, setToken }}>
             {children}
-        </apiContext.Provider>
-    )
-}
+        </ApiContext.Provider>
+    );
+};
