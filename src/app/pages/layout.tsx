@@ -23,11 +23,9 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body>
-        <RenderProvider>
           <Header />
           <AsideBar />
           <div>{children}</div>
-        </RenderProvider>
       </body>
     </html>
   );

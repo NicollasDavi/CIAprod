@@ -1,13 +1,7 @@
 "use client"
-import withAuth from '../../context/withAuth';
 import Carousel from '../../../components/Carousel';
 import MiniCalender from '../../../components/MiniCalender';
 import Link from 'next/link';
-import React, { useEffect, useState} from 'react';
-
-
-
-
 const Page = () => {
 
   const items = [
@@ -22,12 +16,6 @@ const Page = () => {
       caption: 'Legenda da imagem 2',
     },
   ];
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
-      console.log(token);
-    }
-  }, []);
   return (
     <div className=' pt-8'>
       <div className='w-11/12 md:w-9/12 m-auto h-auto mb-10'>
@@ -51,4 +39,4 @@ const Page = () => {
   );
 };
 
-export default withAuth(Page);
+export default Page;

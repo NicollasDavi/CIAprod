@@ -3,7 +3,6 @@ import axiosInstance from '../../../app/axiosInstance';
 import CourseCard from '../../../components/CourseCard';
 import PlusIcon from '../../../components/PlusIcon';
 import React, { useState, useEffect } from 'react';
-import withAuth from '../../context/withAuth';
 
 interface Course {
   id: string;
@@ -56,4 +55,4 @@ const Page = () => {
   );
 }
 
-export default withAuth(Page);
+export default Page;

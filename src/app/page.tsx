@@ -2,7 +2,7 @@
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import axiosInstance from './axiosInstance';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../app/css/login.module.css"
 
 export default function Home() {
@@ -13,6 +13,8 @@ export default function Home() {
 
 
   const handleRedirect = () => {
+  return    window.location.replace('/pages/home');
+
     const newMatricula = parseInt(matricula)
     const data = {
       matricula: newMatricula,
@@ -31,13 +33,6 @@ export default function Home() {
           console.error('Erro:', error);
       });
   };
-
-useEffect(() => {
-    console.log(typeof(matricula))
-    console.log(typeof(senha))
-    console.log(matricula)
-    console.log(senha)
-}, [matricula, senha])
   return (
     <main className={styles.main}>
       <div className={styles.div1}>
@@ -50,7 +45,7 @@ useEffect(() => {
           </div>
           <div>
             <section >
-              <input type="text" placeholder="Matrícla" className={styles.input} onChange={(e) => setMatricula(e.target.value)}/>
+              <input type="text" placeholder="Matrícula" className={styles.input} onChange={(e) => setMatricula(e.target.value)}/>
             </section>
             <section>
               <input type="text" placeholder="Senha" className={styles.input} onChange={(e) => setSenha(e.target.value)}/>
