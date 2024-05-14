@@ -3,7 +3,6 @@ import Image from 'next/image'
 import React from 'react'
 
 const handleRedirect = () => {
-  // Redirecionar para "/pages/calculadora"
   window.location.href = "/pages/calculadora";
 };
 

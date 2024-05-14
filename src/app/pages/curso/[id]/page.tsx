@@ -40,7 +40,7 @@ const Page = () => {
       <div className='gap-4 md:gap-0 w-11/12 m-auto h-auto mb-10 md:pl-28'>
         <div className='flex flex-row'>
             <div className='w-6/12 md:w-3/12 md:p-8'>
-                <img alt='' src={data && data.imagem} width={1000} height={100} className='w-full rounded-lg'/>
+                <Image alt='' src={data && data.imagem ? data.imagem : ''}  width={1000} height={100} className='w-full rounded-lg'/>
             </div>
             <div className='md:pt-10 md:pl-10 pl-3 w-5/12'>
                 <h1 className='text-2xl md:text-4xl font-bold'>{data && data.nome}</h1>

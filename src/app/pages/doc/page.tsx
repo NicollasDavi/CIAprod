@@ -178,13 +178,13 @@ const Page = () => {
                                  <p >{item.text}</p>
                                </section>
                                <section className='w-6/12 '>
-                                    <img src={item.img} alt="Imagem escolhida" className=' h-auto max-h-[500px] rounded-xl m-auto'/>
+                                    <Image src={item.img} alt="Imagem escolhida" className=' h-auto max-h-[500px] rounded-xl m-auto'/>
                                 </section>                            </div>
                         ) : ""}
                         {item.type === 3 ? (
                             <div className='flex flex-row gap-2 w-full'>
                                 <section className='w-6/12 '>
-                                    <img src={item.img} alt="Imagem escolhida" className=' h-auto max-h-[500px] rounded-xl m-auto'/>
+                                    <Image src={item.img} alt="Imagem escolhida" className=' h-auto max-h-[500px] rounded-xl m-auto'/>
                                 </section>
                                <section className='w-6/12 '>
                                  <p >{item.text}</p>
@@ -193,7 +193,7 @@ const Page = () => {
                         ) : "" }
                          {item.type === 4 ? (
                             <div className='flex flex-row gap-2 w-full'>
-                                <img src={item.img} alt="Imagem escolhida" className='bg-white h-auto max-h-[500px] rounded-xl m-auto'/>
+                                <Image src={item.img} alt="Imagem escolhida" className='bg-white h-auto max-h-[500px] rounded-xl m-auto'/>
                             </div>
                         ) : "" }
                         <hr className='mt-2'/>
@@ -224,7 +224,7 @@ const Page = () => {
                            }}
                        />
                         ) : (
-                            <img src={URL.createObjectURL(image)} alt="Imagem escolhida" className='md:w-3/12 m-auto w-full p-2 rounded-xl'/>
+                            <Image src={URL.createObjectURL(image)} alt="Imagem escolhida" className='md:w-3/12 m-auto w-full p-2 rounded-xl'/>
                         )}
                     </div>
                 </NotText>
@@ -242,7 +242,7 @@ const Page = () => {
                            }}
                        />
                         ) : (
-                            <img src={URL.createObjectURL(image)} alt="Imagem escolhida" className='md:w-3/12 m-auto w-full p-2 rounded-xl'/>
+                            <Image src={URL.createObjectURL(image)} alt="Imagem escolhida" className='md:w-3/12 m-auto w-full p-2 rounded-xl'/>
                         )}
                          <textarea
                             name=""
@@ -270,7 +270,7 @@ const Page = () => {
                            }}
                        />
                         ) : (
-                            <img src={URL.createObjectURL(image)} alt="Imagem escolhida" className='md:w-3/12 m-auto w-full p-2 rounded-xl'/>
+                            <Image src={URL.createObjectURL(image)} alt="Imagem escolhida" className='md:w-3/12 m-auto w-full p-2 rounded-xl'/>
                         )}
                     </div>
                 </NotText>

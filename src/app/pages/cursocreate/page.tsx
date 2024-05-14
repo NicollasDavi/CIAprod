@@ -1,4 +1,5 @@
 "use client"
+import Image from 'next/image';
 import axiosInstance from '../../../app/axiosInstance'
 import React, { useEffect, useState } from 'react'
 
@@ -99,7 +100,7 @@ const Page = () => {
                             }}
                         />
                     ) : (
-                        <img src={URL.createObjectURL(image)} alt="Imagem escolhida" className='md:w-3/12 w-full p-2 rounded-xl m-auto'/>
+                        <Image src={URL.createObjectURL(image)} alt="Imagem escolhida" className='md:w-3/12 w-full p-2 rounded-xl m-auto'/>
                     )}
         </section>
         <section className='mt-10'>       
