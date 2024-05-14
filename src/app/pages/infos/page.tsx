@@ -3,7 +3,7 @@ import axiosInstance from '../../../app/axiosInstance';
 import CourseCard from '../../../components/CourseCard';
 import PlusIcon from '../../../components/PlusIcon';
 import React, { useState, useEffect } from 'react';
-import withAuth from '../../../app/utils/withAuth';
+import withAuth from '../../context/withAuth';
 
 interface Course {
   id: string;

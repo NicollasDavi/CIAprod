@@ -10,7 +10,7 @@ import { SiGoogledocs } from "react-icons/si";
 import { FaCalendarAlt } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
 import axiosInstance from '../app/axiosInstance';
-import withAuth from '../app/utils/withAuth';
+import withAuth from '../app/context/withAuth';
 
 const AsideBar = () => {
   const handleLogOut = () => {

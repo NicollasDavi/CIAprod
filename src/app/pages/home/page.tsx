@@ -1,5 +1,5 @@
 "use client"
-import withAuth from '../../../app/utils/withAuth';
+import withAuth from '../../context/withAuth';
 import Carousel from '../../../components/Carousel';
 import MiniCalender from '../../../components/MiniCalender';
 import Link from 'next/link';
