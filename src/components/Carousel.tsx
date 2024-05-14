@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Image from 'next/image';
 
 type CarouselItem = {
   image: string;
@@ -48,7 +47,7 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
       <Slider ref={sliderRef} {...settings}>
         {items.map((item, index) => (
           <div key={index}>
-            <Image src={item.image} alt={item.alt} />
+            <img src={item.image} alt={item.alt} />
           </div>
         ))}
       </Slider>
