@@ -96,7 +96,7 @@ const Page = () => {
 
     const addNewType = (type: number) => {
         const newText = newTypeText.replace(/\n\s*\n/g, '\n\n');
-
+        console.log("oi")
         if (image) {
             convertImageToBase64(image).then(base64Image => {
                 const newType: DocType = {
@@ -111,17 +111,32 @@ const Page = () => {
                 }));
 
                 setNewTypeText("");
-                setImage(null); // Alteração aqui
+                setImage(null);
                 closeText();
             }).catch(error => {
                 console.error('Erro ao converter imagem para base64:', error);
             });
         } else {
+            const newType: DocType = {
+                type: type,
+                text: newText,
+                img: ""
+            };
+
+            setDoc(prevDoc => ({
+                ...prevDoc,
+                types: [...prevDoc.types, newType]
+            }));
+
+            setNewTypeText("");
+            closeText();
             console.error('Nenhuma imagem selecionada.');
         }
     };
 
     const handleSave = () => {
+        console.log("opa")
+        console.log(selectedNotType)
         if (selectedNotType !== null) {
             addNewType(selectedNotType);
             setSelectedNotType(null);
@@ -200,7 +215,7 @@ const Page = () => {
                     </div>
                 ))}
                 <hr />
-                <NotText isNotTextOpen={isNotTextImageOpen} onNotTextClose={closeText} onSave={handleSave} type={selectedNotType || 3}>
+                <NotText isNotTextOpen={isNotTextImageOpen} onNotTextClose={closeText} onSave={handleSave} type={2}>
                     <div className='flex md:flex-row flex-col gap-2'>
                         <textarea
                             name=""
@@ -228,7 +243,7 @@ const Page = () => {
                         )}
                     </div>
                 </NotText>
-                <NotText isNotTextOpen={isNotImageTextOpen} onNotTextClose={closeText} onSave={handleSave} type={selectedNotType || 3}>
+                <NotText isNotTextOpen={isNotImageTextOpen} onNotTextClose={closeText} onSave={handleSave} type={3}>
                     <div className='flex md:flex-row flex-col gap-2'>
                         {!image ? (
                            <input
@@ -256,7 +271,7 @@ const Page = () => {
                         ></textarea>
                     </div>
                 </NotText>
-                <NotText isNotTextOpen={isNotImageOpen} onNotTextClose={closeText} onSave={handleSave} type={selectedNotType || 3}>
+                <NotText isNotTextOpen={isNotImageOpen} onNotTextClose={closeText} onSave={handleSave} type={4}>
                     <div className='flex md:flex-row flex-col gap-2'>
                         {!image ? (
                            <input
@@ -274,7 +289,7 @@ const Page = () => {
                         )}
                     </div>
                 </NotText>
-                <NotText isNotTextOpen={isNotTextOpen} onNotTextClose={closeText} onSave={handleSave} type={selectedNotType || 4}>
+                <NotText isNotTextOpen={isNotTextOpen} onNotTextClose={closeText} onSave={handleSave} type={1}>
                         <textarea
                             name=""
                             id=""

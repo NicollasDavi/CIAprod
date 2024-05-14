@@ -9,11 +9,13 @@ export default function Home() {
   const router = useRouter();
   const [matricula, setMatricula] = useState("")
   const [senha, setSenha] = useState("")
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
 
   const handleRedirect = () => {
-  return    window.location.replace('/pages/home');
+    setLoading(true)
+  return  ;
 
     const newMatricula = parseInt(matricula)
     const data = {
@@ -31,6 +33,10 @@ export default function Home() {
       })
       .catch(error => {
           console.error('Erro:', error);
+          setError("bah né guri")
+          setTimeout(() => {
+            setError("")
+          }, 3000)
       });
   };
   return (
@@ -52,8 +58,10 @@ export default function Home() {
             </section>
             <p style={{textAlign: "start", marginTop: "1rem", fontSize: "0.75rem", lineHeight: "1rem", marginLeft: "0.5rem"}}>Esqueceu a senha ?</p>
           </div>
+          <div className="mt-4 text-red-500 font-extrabold">{error}</div>
+
           <div className="md:mt-20 mt-4">
-            <button onClick={handleRedirect} className={styles.button}>Entrar</button>
+            <button onClick={handleRedirect} className={styles.button}>{loading ? "Aguarde..." : "Entrar"}</button>
             <p style={{fontSize: "0.75rem", lineHeight: "1rem", marginTop: "1rem"}}>Primeiro Acesso?</p>
           </div>
         </div>
