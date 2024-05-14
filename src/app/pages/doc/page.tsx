@@ -274,7 +274,7 @@ const Page = () => {
                         )}
                     </div>
                 </NotText>
-                <NotText isNotTextOpen={isNotTextOpen} onNotTextClose={closeText} onSave={handleSave} type={selectedNotType || 3}>
+                <NotText isNotTextOpen={isNotTextOpen} onNotTextClose={closeText} onSave={handleSave} type={selectedNotType || 4}>
                         <textarea
                             name=""
                             id=""
