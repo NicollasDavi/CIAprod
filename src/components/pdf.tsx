@@ -20,7 +20,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
         return tela - desconto;
       }else{
       const desconto = 0 ;
-      return tela - desconto;
+      return tela;
       }
     };
 
@@ -55,24 +55,46 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
   }, [pdfUrl]);
 
   return (
-    <div className='m-0 p-0' style={{ 
-      width: '80vw', 
-      height: '100vh', 
-      margin: 'auto',
-    }}>
-      <Document file={pdfUrl} className="text-none">
-          {Array.from(new Array(numPages), (el, index) => (
-            <Page
-              key={`page_${index + 1}`}
-              pageIndex={index}
-              renderAnnotationLayer={false}
-              renderTextLayer={false}
-              width={pageWidth}
-            />
-          ))}
-      </Document>
-    </div>
+    <>
+    {pageWidth < 800 ? 
+        <div className='m-0 p-0' style={{ 
+            width: '100vw', 
+            height: '100vh', 
+            margin: 'auto',
+          }}>
+            <Document file={pdfUrl} className="text-none">
+                {Array.from(new Array(numPages), (el, index) => (
+                  <Page
+                    key={`page_${index + 1}`}
+                    pageIndex={index}
+                    renderAnnotationLayer={false}
+                    renderTextLayer={false}
+                    width={pageWidth}
+                  />
+                ))}
+            </Document>
+          </div>
+          : 
+          <div className='m-0 p-0' style={{ 
+            width: '80vw', 
+            height: '100vh', 
+            margin: 'auto',
+          }}>
+            <Document file={pdfUrl} className="text-none">
+                {Array.from(new Array(numPages), (el, index) => (
+                  <Page
+                    key={`page_${index + 1}`}
+                    pageIndex={index}
+                    renderAnnotationLayer={false}
+                    renderTextLayer={false}
+                    width={pageWidth}
+                  />
+                ))}
+            </Document>
+          </div>}
+          </>
   );
+  
 };
 
 export default PDFViewer;
