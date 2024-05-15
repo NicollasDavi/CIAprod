@@ -14,7 +14,10 @@ export default function Home() {
 
 
   const handleRedirect = () => {
+
     setLoading(true)
+    return window.location.replace('/pages/home');
+
 
     const newMatricula = parseInt(matricula)
     const data = {
