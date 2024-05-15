@@ -15,8 +15,13 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
   useEffect(() => {
     const calculatePageWidth = () => {
       const tela = window.innerWidth;
-      const desconto = tela * 0.2;
+      if(tela > 800){
+        const desconto = tela * 0.2;
+        return tela - desconto;
+      }else{
+      const desconto = 0 ;
       return tela - desconto;
+      }
     };
 
     const updatePageWidth = () => {
@@ -57,7 +62,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
     }}>
       <Document file={pdfUrl} className="text-none">
           {Array.from(new Array(numPages), (el, index) => (
-            <Page 
+            <Page
               key={`page_${index + 1}`}
               pageIndex={index}
               renderAnnotationLayer={false}
