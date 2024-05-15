@@ -15,7 +15,6 @@ export default function Home() {
 
   const handleRedirect = () => {
     setLoading(true)
-  return  ;
 
     const newMatricula = parseInt(matricula)
     const data = {

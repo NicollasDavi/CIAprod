@@ -1,4 +1,5 @@
 "use client"
+import PDFViewer from '@/src/components/pdf';
 import Carousel from '../../../components/Carousel';
 import MiniCalender from '../../../components/MiniCalender';
 import Link from 'next/link';
@@ -11,7 +12,7 @@ const Page = () => {
       caption: 'Legenda da imagem 1',
     },
     {
-      image: 'https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg',
+      image: '/CIA.png',
       alt: 'Texto alternativo da imagem',
       caption: 'Legenda da imagem 2',
     },
@@ -26,15 +27,17 @@ const Page = () => {
         <MiniCalender />
     </div>
 
-      <div className='w-full m-auto'>
+      {/* <div className='w-full m-auto'>
         <section className='m-auto md:mt- pt-4 flex-col gap-5 md:flex-row flex justify-between w-9/12'>
             <Link href={"/pages/calculadora"} className='bg-blue-500 text-center py-3 md:px-10 md:py-3 rounded-lg text-white md:mr-4'>Calculadora</Link>
         </section>
-    </div>
-    <div className='md:flex justify-center pt-20 hidden'>
+    </div> */}
+    <div className='md:flex justify-center pt-10 hidden'>
         <MiniCalender />
     </div>
-
+    <div className='w-screen pt-10'>
+      <PDFViewer pdfUrl="/info.pdf"/>
+    </div>
     </div>
   );
 };
