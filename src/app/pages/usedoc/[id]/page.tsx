@@ -21,7 +21,6 @@ const Page = () => {
               setLoading(false);
           }
       };
-
       fetchData();
   }, [id]);
 

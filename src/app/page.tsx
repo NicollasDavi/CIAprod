@@ -16,30 +16,32 @@ export default function Home() {
   const handleRedirect = () => {
 
     setLoading(true)
-    return window.location.replace('/pages/home');
+    window.location.replace('/');
+
+   
 
 
-    const newMatricula = parseInt(matricula)
-    const data = {
-      matricula: newMatricula,
-      senha: senha
-    };
+  //   const newMatricula = parseInt(matricula)
+  //   const data = {
+  //     matricula: newMatricula,
+  //     senha: senha
+  //   };
   
-  axiosInstance.post('/login', data)
-      .then(response => {
-        localStorage.setItem('token', response.data.TOKEN)
-        console.log(localStorage.getItem('token'))
-        localStorage.setItem('nome', response.data.USER)
-        const redirectUrl = response.data.URL; 
-      router.push(redirectUrl); 
-      })
-      .catch(error => {
-          console.error('Erro:', error);
-          setError("bah né guri")
-          setTimeout(() => {
-            setError("")
-          }, 3000)
-      });
+  // axiosInstance.post('/login', data)
+  //     .then(response => {
+  //       localStorage.setItem('token', response.data.TOKEN)
+  //       localStorage.setItem('admin', response.data.ADM)
+  //       localStorage.setItem('nome', response.data.USER)
+  //       const redirectUrl = response.data.URL; 
+  //     router.push(redirectUrl); 
+  //     })
+  //     .catch(error => {
+  //         console.error('Erro:', error);
+  //         setError("bah né guri")
+  //         setTimeout(() => {
+  //           setError("")
+  //         }, 3000)
+  //     });
   };
   return (
     <main className={styles.main}>

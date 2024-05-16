@@ -10,7 +10,6 @@ interface Course {
 }
 
 const Page = () => {
-
   const [data, setData] = useState<Course[]>([]);
 
   const handleDelete = (id: string) => {

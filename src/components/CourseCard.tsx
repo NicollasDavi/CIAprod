@@ -3,6 +3,7 @@ import React from 'react'
 import { MdDeleteForever } from "react-icons/md";
 import { BiSolidEdit } from "react-icons/bi";
 import Link from 'next/link';
+import { useRenderContext } from '../app/context/renderContext';
 
 interface Card{
   link: string,
@@ -10,6 +11,8 @@ interface Card{
   handleDelete: any
 }
 const CourseCard: React.FC<Card> = ({link, src, handleDelete}) => {
+  const { admin } = useRenderContext();
+
   return (
     <div className='max-w-48 bg-[#3B82F6]/90 rounded-lg mb-10'>
         <div>
@@ -17,10 +20,10 @@ const CourseCard: React.FC<Card> = ({link, src, handleDelete}) => {
                 <img src={src} width={1000} height={100} alt={''} className='w-full rounded-lg'/>
             </Link>
         </div>
-        <div className='p-1 items-end justify-end flex'>
+        {admin ? <div className='p-1 items-end justify-end flex '>
             <button className='p-1 rounded-lg  text-white mr-5 text-lg'><BiSolidEdit /></button>
             <button className='p-1 rounded-lg bg-red-500 text-white mr-3' onClick={handleDelete}><MdDeleteForever /></button>
-        </div>
+        </div> : " " } 
     </div>
   )
 }
