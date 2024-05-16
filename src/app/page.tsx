@@ -16,7 +16,7 @@ export default function Home() {
   const handleRedirect = () => {
 
     setLoading(true)
-    window.location.replace('/');
+    window.location.replace('/pages/home');
 
    
 
