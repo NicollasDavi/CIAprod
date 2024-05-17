@@ -28,7 +28,7 @@ const MobileAsideBar = () => {
 
   return (
     <div className='block md:hidden h-screen w-2/12 fixed left-0 z-50'>
-    <div className={`bg-[#3b82f6] w-full ${expanded? ' h-full' : 'h-1/6 absolute bottom-0 bg-inherit'}`}>
+    <div className={`bg-[#3b82f6] w-full ${expanded? ' h-full' : 'h-1/6 absolute bottom-0 bg-inherit'} transition-all`}>
       <div className={`${expanded? 'block' : 'hidden'}`}>
       <section className={`pt-4`}>
       <Link href={"/pages/calendario"} className='text-4xl text-center text-white'>
@@ -59,11 +59,6 @@ const MobileAsideBar = () => {
       <section className='w-6/12 m-auto mt-8'>
         <Link href={"/pages/calendario"} className='text-4xl text-center text-white'>
           <FaCalendarAlt className='m-auto'/>
-        </Link>
-      </section>
-      <section className='w-6/12 m-auto mt-8'>
-        <Link href={"/pages/calendario"} className='text-4xl text-center text-white'>
-          <CiLogout  className='m-auto'/>
         </Link>
       </section>
       </div>
