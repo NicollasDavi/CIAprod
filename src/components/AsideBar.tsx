@@ -26,8 +26,8 @@ const AsideBar = () => {
   }
       
   return (
-    <div className='hidden md:block p-5 h-screen w-1/12 fixed left-0 z-50'>
-      <div className='bg-[#3B82F6] w-full h-full rounded-[48px]'>
+    <div className='hidden md:block h-screen w-1/12 fixed left-0 z-50'>
+      <div className='bg-[#3B82F6] w-full h-full'>
         <section className='pt-4'>
           <Image alt="" src="/Branco.png" width={1000} height={1000} className="w-4/6 h-full m-auto px-1"/>
           <hr className='mt-3'/>
