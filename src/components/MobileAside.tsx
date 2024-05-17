@@ -30,10 +30,10 @@ const MobileAsideBar = () => {
     <div className='block md:hidden h-screen w-2/12 fixed left-0 z-50'>
     <div className={`bg-[#3b82f6] w-full ${expanded? ' h-full' : 'h-1/6 absolute bottom-0 bg-inherit'}`}>
       <div className={`${expanded? 'block' : 'hidden'}`}>
-
-      
       <section className={`pt-4`}>
-        <Image alt="" src="/Branco.png" width={1000} height={1000} className="w-4/6 h-full m-auto px-1"/>
+      <Link href={"/pages/calendario"} className='text-4xl text-center text-white'>
+          <CiLogout  className='m-auto'/>
+        </Link>
         <hr className='mt-3'/>
       </section>
       <section className='w-6/12 m-auto mt-20'>
