@@ -28,8 +28,11 @@ const MobileAsideBar = () => {
 
   return (
     <div className='block md:hidden h-screen w-2/12 fixed left-0 z-50'>
-    <div className='bg-[#3B82F6] w-full h-full'>
-      <section className='pt-4'>
+    <div className={`bg-[#3b82f6] w-full ${expanded? ' h-full' : 'h-1/6 absolute bottom-0 bg-inherit'}`}>
+      <div className={`${expanded? 'block' : 'hidden'}`}>
+
+      
+      <section className={`pt-4`}>
         <Image alt="" src="/Branco.png" width={1000} height={1000} className="w-4/6 h-full m-auto px-1"/>
         <hr className='mt-3'/>
       </section>
@@ -58,15 +61,18 @@ const MobileAsideBar = () => {
           <FaCalendarAlt className='m-auto'/>
         </Link>
       </section>
-      <div className='w-full'>
-          <section className='fixed bottom-5 left-0 right-0  text-white text-center p-4 w-1/12'>
-          <hr className='mb-4'/>
-          <button onClick={handleLogOut} className='text-4xl inline-block'>
-              <CiLogout  className='inline-block'/>
-          </button>
-          </section>
+      <section className='w-6/12 m-auto mt-8'>
+        <Link href={"/pages/calendario"} className='text-4xl text-center text-white'>
+          <CiLogout  className='m-auto'/>
+        </Link>
+      </section>
       </div>
-      
+        <section className={`absolute bottom-5 left-0 right-0 ${expanded? '' : 'bg-[#3b82f6] rounded-xl ml-2'}`}>
+          <hr className={`mb-3 ${expanded? '' : 'hidden' }`}/>
+            <button onClick={() => setExpanded(!expanded)} className={`text-4xl inline-block text-white `}>
+              <Image alt="" src="/Branco.png" width={1000} height={1000} className={` h-full m-auto ${expanded? 'w-4/6' : 'w-full p-2 '}`}/> 
+            </button>
+        </section>
     </div>
   </div>
   );

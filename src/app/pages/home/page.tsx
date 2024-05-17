@@ -7,12 +7,12 @@ const Page = () => {
 
   const items = [
     {
-      image: '/CIA.png',
+      image: '/t.jpg',
       alt: 'Texto alternativo da imagem',
       caption: 'Legenda da imagem 1',
     },
     {
-      image: '/CIA.png',
+      image: '/t.jpg',
       alt: 'Texto alternativo da imagem',
       caption: 'Legenda da imagem 2',
     },
