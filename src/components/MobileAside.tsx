@@ -67,7 +67,7 @@ const MobileAsideBar = () => {
         </Link>
       </section>
       </div>
-        <section className={`absolute bottom-5 left-0 right-0 ${expanded? '' : 'bg-[#3b82f6] rounded-xl ml-2'}`}>
+        <section className={`absolute bottom-5 left-0 right-0 ${expanded? '' : 'bg-[#3b82f6] rounded-xl ml-2 mb-10'}`}>
           <hr className={`mb-3 ${expanded? '' : 'hidden' }`}/>
             <button onClick={() => setExpanded(!expanded)} className={`text-4xl inline-block text-white `}>
               <Image alt="" src="/Branco.png" width={1000} height={1000} className={` h-full m-auto ${expanded? 'w-4/6' : 'w-full p-2 '}`}/> 
@@ -76,7 +76,6 @@ const MobileAsideBar = () => {
     </div>
   </div>
   );
-
 };
 
 export default MobileAsideBar;
