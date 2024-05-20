@@ -1,16 +1,19 @@
 "use client";
-import axiosInstance from '../../../app/axiosInstance';
+import axiosInstance from '../../../../../app/axiosInstance';
 import React, { useEffect, useState } from 'react';
 
 const Page = () => {
     const [image, setImage] = useState<Blob | null>(null);
-    const [matricula, setMatricula] = useState("");
+    const [vcep, setCep] = useState("");
     const [nome, setNome] = useState("");
-    const [unidade, setUnidade] = useState("");
+    const [numeroTel, setNumeroTel] = useState("");
+    const [horario, setHorario] = useState("");
+
+    const [numeroWpp, setNumeroWpp] = useState("");
+
     const [turno, setTurno] = useState("");
     const [informacao, setInformacao] = useState("");
     const [vai, setVai] = useState(0);
-    const [unidades, setUnidades] = useState<any[]>([]);
 
     const handleVai = () => {
         setVai(1);
@@ -31,22 +34,18 @@ const Page = () => {
 
     const handleEnv = async (base64Image: string) => {
         try {
-            const curso = {
-                matricula: parseInt(matricula, 10),
+            const unidade = {
                 nome,
-                unidade,
                 turno,
-                informacao,
-                imagem: base64Image
+                informacoes: informacao,
+                imagem: base64Image,
+                numeroTel,
+                numeroWpp,
+                horario,
+                vcep
             };
 
-            await axiosInstance.post('/curso', curso);
-            setMatricula('');
-            setNome('');
-            setUnidade('');
-            setTurno('');
-            setInformacao('');
-            setImage(null);
+            await axiosInstance.post('/unidade', unidade);
             setVai(0);
         } catch (error) {
             console.error('Erro ao criar curso:', error);
@@ -73,33 +72,13 @@ const Page = () => {
         }
     }, [vai]);
 
-    useEffect(() => {
-        const fetchUnidades = async () => {
-            try {
-                const response = await axiosInstance.get('/unidades');
-                setUnidades(response.data);
-            } catch (error) {
-                console.error('Erro ao buscar unidades:', error);
-            }
-        };
-
-        fetchUnidades();
-    }, []);
-
     return (
         <div className='pt-8'>
             <div className='w-11/12 md:w-9/12 m-auto h-auto mb-10'>
-                <h1 className='ml-1 pb-2 pt-10 md:pt-12'>Criar Curso</h1>
+                <h1 className='ml-1 pb-2 pt-10 md:pt-12'>Criar Unidade</h1>
             </div>
             <div className='gap-4 md:gap-0 w-11/12 m-auto h-auto mb-10 md:pl-28'>
                 <div className='grid md:grid-cols-3 grid-cols-2 gap-4 md:gap-10'>
-                    <input 
-                        type="number" 
-                        placeholder="Matricula" 
-                        className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
-                        value={matricula} 
-                        onChange={(e) => setMatricula(e.target.value)} 
-                    />
                     <input 
                         type="text" 
                         placeholder="Nome" 
@@ -107,27 +86,32 @@ const Page = () => {
                         value={nome} 
                         onChange={(e) => setNome(e.target.value)} 
                     />
-                    <select 
-                        value={unidade} 
-                        onChange={(e) => setUnidade(e.target.value)} 
-                        className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2"
-                    >
-                        <option value="">Selecione uma unidade</option>
-                        {unidades.map((unidade, index) => (
-                            <option key={index} value={unidade.codigo}>{unidade.nome}</option>
-                        ))}
-                    </select>
-                    <select 
-                        value={turno} 
-                        onChange={(e) => setTurno(e.target.value)} 
-                        className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2"
-                    >
-                        <option value="">Selecione um turno</option>
-                        <option value="M">Manhã</option>
-                        <option value="T">Tarde</option>
-                        <option value="N">Noite</option>
-                        <option value="E">Online</option>
-                    </select>
+                    <input 
+                        type="text" 
+                        placeholder="cep" 
+                        className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
+                        value={vcep} 
+                        onChange={(e) => setCep(e.target.value)} 
+                    />
+                    <input 
+                        type="number" 
+                        placeholder="tel" 
+                        className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
+                        value={numeroTel} 
+                        onChange={(e) => setNumeroTel(e.target.value)} 
+                    /><input 
+                    type="number" 
+                    placeholder="wpp" 
+                    className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
+                    value={numeroWpp} 
+                    onChange={(e) => setNumeroWpp(e.target.value)} 
+                    /><input 
+                    type="text" 
+                    placeholder="horario" 
+                    className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
+                    value={horario} 
+                    onChange={(e) => setHorario(e.target.value)} 
+                />
                 </div>
                 <section className='mt-10 m-auto w-6/12'>
                     {!image ? (
@@ -159,7 +143,7 @@ const Page = () => {
                         className='m-auto w-10/12 md:w-4/12 py-3 text-white bg-[#3B82F6] rounded-lg' 
                         onClick={handleVai}
                     >
-                        Criar Curso
+                        Criar Unidade
                     </button>
                 </section>
             </div>

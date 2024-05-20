@@ -1,34 +1,33 @@
-"use client"
+"use client";
 import axiosInstance from '../../../app/axiosInstance';
 import React, { useEffect, useState } from 'react';
 
 interface Curso {
     id: string;
     nome: string;
-    // Outras propriedades do curso, se houver
 }
 
 interface Unidade {
     codigo: string;
     nome: string;
-    // Outras propriedades da unidade, se houver
 }
 
 const Page = () => {
-    const [nome, setNome] = useState("");
+    const [cursoId, setCursoId] = useState("");
     const [unidade, setUnidade] = useState("");
     const [turno, setTurno] = useState("");
-    const [valor_e, setValor_e] = useState("");
-    const [valor_m, setValor_m] = useState("");
+    const [parcelamento, setParcelamento] = useState(0);
+    const [desconto, setDesconto] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [cursos, setCursos] = useState<Curso[]>([]);
     const [unidades, setUnidades] = useState<Unidade[]>([]);
+    const [mensalidade, setMensalidade] = useState("");
 
     useEffect(() => {
         const fetchCursos = async () => {
             try {
-                const response = await axiosInstance.get('/cursos');
+                const response = await axiosInstance.get('/valores');
                 setCursos(response.data);
             } catch (error) {
                 console.error('Erro ao buscar cursos:', error);
@@ -49,27 +48,23 @@ const Page = () => {
     }, []);
 
     const handleEnv = async () => {
-        if (!nome || !unidade || !turno || !valor_e || !valor_m) {
-            setError("Por favor, preencha todos os campos.");
-            return;
-        }
-
         setLoading(true);
+        setError("");
 
         try {
             const curso = {
-                nome,
+                id: cursoId,
                 unidade,
                 turno,
-                valor_E: parseFloat(valor_e),
-                valor_M: parseFloat(valor_m)
+                parcelamento: Number(parcelamento),
+                desconto: Number(desconto)
             };
 
-            await axiosInstance.post('/curso', curso);
+            const response = await axiosInstance.post('/calc', curso);
+            setMensalidade(response.data.mensalidade);
             setLoading(false);
-            window.location.replace(`/pages/calculadora`);
         } catch (error) {
-            setError("Ocorreu um erro ao criar o curso. Por favor, tente novamente.");
+            setError("Ocorreu um erro ao calcular. Por favor, tente novamente.");
             setLoading(false);
         }
     };
@@ -77,14 +72,14 @@ const Page = () => {
     return (
         <div className='pt-8'>
             <div className='w-11/12 md:w-9/12 m-auto h-auto mb-10'>
-                <h1 className='ml-1 pb-2 pt-10 md:pt-12'>Criar Curso</h1>
+                <h1 className='ml-1 pb-2 pt-10 md:pt-12'>Calcular Mensalidade</h1>
             </div>
             <div className='gap-4 md:gap-0 w-11/12 m-auto h-auto mb-10 md:pl-28'>
                 <div className='grid md:grid-cols-3 grid-cols-2 gap-4 md:gap-10'>
-                    <select value={nome} onChange={(e) => setNome(e.target.value)} className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2">
+                    <select value={cursoId} onChange={(e) => setCursoId(e.target.value)} className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2">
                         <option value="">Selecione um curso</option>
                         {cursos.map(curso => (
-                            <option key={curso.id} value={curso.nome}>{curso.nome}</option>
+                            <option key={curso.id} value={curso.id}>{curso.nome}</option>
                         ))}
                     </select>
 
@@ -95,18 +90,38 @@ const Page = () => {
                         ))}
                     </select>
 
-                    <input type="text" placeholder="Turno" className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e) => setTurno(e.target.value)} />
+                    <select 
+                        value={turno} 
+                        className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
+                        onChange={(e) => setTurno(e.target.value)}
+                    >
+                        <option value="">Selecione um turno</option>
+                        <option value="M">Manhã</option>
+                        <option value="T">Tarde</option>
+                        <option value="N">Noite</option>
+                        <option value="E">Online</option>
+                    </select>
+                    <input 
+                        type="number" 
+                        placeholder="Parcelamento" 
+                        className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
+                        onChange={(e) => setParcelamento(Number(e.target.value))} 
+                    />
 
-                    <input type="number" placeholder="Valor Escola" className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e) => setValor_e(e.target.value)} />
-
-                    <input type="number" placeholder="Valor Material" className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" onChange={(e) => setValor_m(e.target.value)} />
+                    <input 
+                        type="number" 
+                        placeholder="Desconto" 
+                        className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
+                        onChange={(e) => setDesconto(Number(e.target.value))} 
+                    />
                 </div>
                 <section className='mt-10 w-11/12 items-center flex'>
                     <button className='m-auto w-10/12 md:w-4/12 py-3 text-white bg-[#3B82F6] rounded-lg' onClick={handleEnv} disabled={loading}>
-                        {loading ? "Aguarde..." : "Criar Curso"}
+                        {loading ? "Aguarde..." : "Calcular"}
                     </button>
                 </section>
-                <div className="mt-4 text-red-500">{error}</div>
+                {error && <div className="mt-4 text-red-500">{error}</div>}
+                {mensalidade && <div className="mt-4 text-green-500">Mensalidade: {mensalidade}</div>}
             </div>
         </div>
     );

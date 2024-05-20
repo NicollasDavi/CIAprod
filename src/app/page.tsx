@@ -33,7 +33,6 @@ export default function Home() {
         localStorage.setItem('token', response.data.TOKEN)
         localStorage.setItem('admin', response.data.ADM)
         localStorage.setItem('nome', response.data.USER)
-        alert(localStorage.getItem('admin' + 'nome'))
         const redirectUrl = response.data.URL; 
       router.push(redirectUrl); 
       })

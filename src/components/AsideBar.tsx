@@ -10,8 +10,14 @@ import { SiGoogledocs } from "react-icons/si";
 import { FaCalendarAlt } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
 import axiosInstance from '../app/axiosInstance';
+import { BiSolidData } from "react-icons/bi";
+import { useRenderContext } from '../app/context/renderContext';
+import { MdCalculate } from "react-icons/md";
+
 
 const AsideBar = () => {
+  const { admin } = useRenderContext();
+
   const handleLogOut = () => {
     const matricula = 105404;
     axiosInstance.post(`/logout/${matricula}`)
@@ -55,6 +61,16 @@ const AsideBar = () => {
         <section className='w-6/12 m-auto mt-8'>
           <Link href={"/pages/calendario"} className='text-4xl text-center text-white'>
             <FaCalendarAlt className='m-auto'/>
+          </Link>
+        </section>
+        <section className='w-6/12 m-auto mt-8'>
+          {admin ? <Link href={"/pages/datalist"} className='text-4xl text-center text-white'>
+            <BiSolidData className='m-auto'/>
+          </Link> : ""}
+        </section>
+        <section className='w-6/12 m-auto mt-8'>
+          <Link href={"/pages/calculadora"} className='text-4xl text-center text-white'>
+            <MdCalculate className='m-auto'/>
           </Link>
         </section>
         <div className='w-full'>

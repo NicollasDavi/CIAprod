@@ -1,5 +1,7 @@
-"use client"
+"use client";
+import Loader from '@/src/components/Loader';
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 interface Props {
   token: string;
@@ -21,10 +23,11 @@ export const useRenderContext = () => {
 export const RenderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [token, setToken] = useState('');
   const [admin, setAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchToken = async () => {
-      const tokenLocal = await localStorage.getItem('token');
+      const tokenLocal = localStorage.getItem('token');
       const isAdmin = localStorage.getItem('admin');
 
       if (tokenLocal) {
@@ -33,14 +36,44 @@ export const RenderProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       } else {
         window.location.replace('/');
       }
+      setLoading(false); // Atualiza o estado de carregamento
     };
 
     fetchToken();
   }, []);
 
+  useEffect(() => {
+    const handleStart = () => setLoading(true);
+    const handleComplete = () => setLoading(false);
+
+    // Adiciona eventos de mudança de rota
+    window.addEventListener('beforeunload', handleStart);
+    window.addEventListener('popstate', handleStart);
+    window.addEventListener('pushState', handleStart);
+    window.addEventListener('replaceState', handleStart);
+
+    window.addEventListener('load', handleComplete);
+    window.addEventListener('popstate', handleComplete);
+    window.addEventListener('pushState', handleComplete);
+    window.addEventListener('replaceState', handleComplete);
+
+    return () => {
+      // Remove eventos de mudança de rota
+      window.removeEventListener('beforeunload', handleStart);
+      window.removeEventListener('popstate', handleStart);
+      window.removeEventListener('pushState', handleStart);
+      window.removeEventListener('replaceState', handleStart);
+
+      window.removeEventListener('load', handleComplete);
+      window.removeEventListener('popstate', handleComplete);
+      window.removeEventListener('pushState', handleComplete);
+      window.removeEventListener('replaceState', handleComplete);
+    };
+  }, []);
+
   return (
     <renderContext.Provider value={{ token, setToken, admin, setAdmin }}>
-      {token ? children : "VOCÊ NÃO TEM TOKEN, SAFADO"}
+      {loading ? <Loader /> : children}
     </renderContext.Provider>
   );
 };
