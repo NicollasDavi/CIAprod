@@ -7,6 +7,9 @@ import TextImage from '../../../components/layouts/TextImage';
 import Text from '../../../components/layouts/Text';
 import Image from '../../../components/layouts/Image';
 import axiosInstance from '../../../app/axiosInstance';
+import { BiSolidEdit } from 'react-icons/bi';
+import { useRouter } from 'next/navigation';
+import { useRenderContext } from '../../context/renderContext';
 
 interface DocType {
     type: number;
@@ -15,6 +18,7 @@ interface DocType {
 }
 
 const Page = () => {
+    const { matricula, ...otherProps } = useRenderContext();
     const [image, setImage] = useState<File | Blob | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nome, setNome] = useState("");
@@ -24,9 +28,10 @@ const Page = () => {
     const [isNotImageOpen, setIsNotImageOpen] = useState(false);
     const [isNotImageTextOpen, setIsNotImageTextOpen] = useState(false);
     const [newTypeText, setNewTypeText] = useState("");
-    const [doc, setDoc] = useState<{ nome: string; types: DocType[] }>({
+    const [doc, setDoc] = useState<{ userId: string ,nome: string; types: DocType[] }>({
         nome: "",
-        types: []
+        types: [],
+        userId: ""
     });
     const [selectedNotType, setSelectedNotType] = useState<number | null>(null);
 
@@ -80,7 +85,8 @@ const Page = () => {
     useEffect(() => {
         setDoc(prevDoc => ({
             ...prevDoc,
-            nome: nome
+            nome: nome,
+            userId: matricula
         }));
     }, [nome]);
 
@@ -135,7 +141,6 @@ const Page = () => {
     };
 
     const handleSave = () => {
-        console.log("opa")
         console.log(selectedNotType)
         if (selectedNotType !== null) {
             addNewType(selectedNotType);
@@ -145,9 +150,9 @@ const Page = () => {
 
     const removeItem = (indexToRemove: number) => {
         setDoc(prevDoc => {
-            const { nome, types } = prevDoc;
+            const { nome, types, userId } = prevDoc;
             const updatedTypes = types.filter((_, index) => index !== indexToRemove);
-            return { nome, types: updatedTypes };
+            return { userId, nome, types: updatedTypes };
         });
     };
 
@@ -171,6 +176,7 @@ const Page = () => {
             };
         });
     };
+ 
 
     return (
         <div className='pt-8'>
@@ -179,6 +185,7 @@ const Page = () => {
                     <input type="text" value={nome} className='ml-1 border mb-3' onChange={(e) => setNome(e.target.value)} />
                     <hr className='mt-2'/>
                 </section>
+            
                 {doc.types.map((item, index) => (
                     <div key={index} className='p-2 flex flex-row gap-2 '>
                          <button className=' px-3 py-1 rounded-full w-[30px] text-center h-[30px] text-white' onClick={() => removeItem(index)}>R</button>

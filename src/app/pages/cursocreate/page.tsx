@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from 'next/navigation';
 import axiosInstance from '../../../app/axiosInstance';
 import React, { useEffect, useState } from 'react';
 
@@ -15,7 +16,7 @@ const Page = () => {
     const handleVai = () => {
         setVai(1);
     };
-
+    const router = useRouter()
     const convertImageToBase64 = (image: Blob): Promise<string> => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -47,7 +48,7 @@ const Page = () => {
             setTurno('');
             setInformacao('');
             setImage(null);
-            setVai(0);
+            router.push("/pages/datalist")
         } catch (error) {
             console.error('Erro ao criar curso:', error);
         }

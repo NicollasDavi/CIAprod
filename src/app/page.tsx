@@ -32,6 +32,7 @@ export default function Home() {
       .then(response => {
         localStorage.setItem('token', response.data.TOKEN)
         localStorage.setItem('admin', response.data.ADM)
+        localStorage.setItem('matricula', response.data.MAT)
         localStorage.setItem('nome', response.data.USER)
         const redirectUrl = response.data.URL; 
       router.push(redirectUrl); 

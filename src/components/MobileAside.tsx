@@ -9,6 +9,8 @@ import { SiGoogledocs } from "react-icons/si";
 import { FaCalendarAlt } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
 import axiosInstance from '../app/axiosInstance';
+import { BiSolidData } from 'react-icons/bi';
+import { useRenderContext } from '../app/context/renderContext';
 
 const MobileAsideBar = () => {
   const handleLogOut = () => {
@@ -23,6 +25,7 @@ const MobileAsideBar = () => {
         console.error('Erro:', error);
       });
   };
+  const {admin} = useRenderContext()
 
   const [expanded, setExpanded] = useState(true);
 
@@ -57,10 +60,15 @@ const MobileAsideBar = () => {
         </Link>
       </section>
       <section className='w-6/12 m-auto mt-8'>
+          {admin ? <Link href={"/pages/datalist"} className='text-4xl text-center text-white'>
+            <BiSolidData className='m-auto'/>
+          </Link> : ""}
+        </section>
+      {/* <section className='w-6/12 m-auto mt-8'>
         <Link href={"/pages/calendario"} className='text-4xl text-center text-white'>
           <FaCalendarAlt className='m-auto'/>
         </Link>
-      </section>
+      </section> */}
       </div>
         <section className={`absolute bottom-5 left-0 right-0 ${expanded? '' : 'bg-[#3b82f6] rounded-xl ml-2 mb-10'}`}>
           <hr className={`mb-3 ${expanded? '' : 'hidden' }`}/>

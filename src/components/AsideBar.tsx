@@ -58,11 +58,11 @@ const AsideBar = () => {
             <SiGoogledocs className='m-auto'/>
           </Link>
         </section>
-        <section className='w-6/12 m-auto mt-8'>
+        {/* <section className='w-6/12 m-auto mt-8'>
           <Link href={"/pages/calendario"} className='text-4xl text-center text-white'>
             <FaCalendarAlt className='m-auto'/>
           </Link>
-        </section>
+        </section> */}
         <section className='w-6/12 m-auto mt-8'>
           {admin ? <Link href={"/pages/datalist"} className='text-4xl text-center text-white'>
             <BiSolidData className='m-auto'/>

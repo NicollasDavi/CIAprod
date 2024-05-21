@@ -3,12 +3,16 @@ import React, { useState, useEffect } from 'react';
 import ListBar from '@/src/components/adm/ListBar';
 import axiosInstance from '../../axiosInstance';
 import { useRenderContext } from '../../../app/context/renderContext';
+import { useRouter } from 'next/navigation'
+
 
 interface Unidade {
   id: string;
   nome: string;
   createdAt: any;
   vcep: any;
+  active: boolean;
+
 }
 
 interface Curso {
@@ -17,6 +21,8 @@ interface Curso {
   createdAt: any;
   unidade: string;
   turno: string;
+  active: boolean;
+
 }
 
 interface Valores {
@@ -25,6 +31,7 @@ interface Valores {
   createdAt: any;
   unidade: string;
   turno: string;
+  active: boolean;
 }
 
 const Page = () => {
@@ -32,9 +39,11 @@ const Page = () => {
   const [unidades, setUnidades] = useState<Unidade[]>([]);
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [valores, setValores] = useState<Valores[]>([]);
+  const router = useRouter()
+
 
   useEffect(() => {
-    axiosInstance.get('/unidades')
+    axiosInstance.get('/all/unidades')
       .then(response => {
         setUnidades(response.data);
       })
@@ -44,7 +53,7 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    axiosInstance.get('/cursos')
+    axiosInstance.get('/all/cursos')
       .then(response => {
         setCursos(response.data);
       })
@@ -53,8 +62,10 @@ const Page = () => {
       });
   }, []);
 
+  
+
   useEffect(() => {
-    axiosInstance.get('/valores')
+    axiosInstance.get('/all/valores')
       .then(response => {
         setValores(response.data);
       })
@@ -82,6 +93,8 @@ const Page = () => {
                     data2=""
                     criadoPor="Nicollas"
                     route={`unidade/${unidade.id}`}
+                    active={unidade.active}
+                    routeDisable={`unidade/${unidade.id}`}
                   />
                 ))}
               </section>
@@ -92,6 +105,7 @@ const Page = () => {
                 <hr />
                 {cursos.map(curso => (
                   <ListBar
+                    active={curso.active}
                     key={curso.id}
                     nome={curso.nome}
                     date={curso.createdAt}
@@ -99,6 +113,7 @@ const Page = () => {
                     data1={curso.unidade}
                     data2={curso.turno}
                     route={`curso/delete/${curso.id}`}
+                    routeDisable={`unidade/${curso.id}`}
                   />
                 ))}
               </section>
@@ -109,6 +124,7 @@ const Page = () => {
                 <hr />
                 {valores.map(valor => (
                   <ListBar
+                    active={valor.active}
                     key={valor.id}
                     nome={valor.nome}
                     criadoPor="Nicollas"
@@ -116,13 +132,17 @@ const Page = () => {
                     data2={valor.turno}
                     date={valor.createdAt}
                     route={`valor/${valor.id}`}
+                    routeDisable={`valor/${valor.id}`}
                   />
                 ))}
               </section>
             </div>
           </div>
-          <div className='w-4/12 bg-blue-500 absolute top-0 right-0'>
-            <h1>opa</h1>
+          <div className='w-2/12 p-3 absolute bottom-0 right-0 flex flex-col'>
+            <button onClick={() => router.push('/pages/infos/add/unidade')} className='bg-blue1 p-2 mb-4 rounded-xl text-white'>Adicionar Unidade</button>
+            <button onClick={() => router.push('/pages/cursocreate')} className='bg-blue1 p-2 mb-4 rounded-xl text-white'>Adicionar Curso</button>
+            <button onClick={() => router.push('/pages/calculadora/add')} className='bg-blue1 p-2 mb-4 rounded-xl text-white'>Adicionar Valor</button>
+            <button onClick={() => router.push('/pages/professores/add')} className='bg-blue1 p-2 mb-4 rounded-xl text-white'>Adicionar Unidade</button>
           </div>
         </div>
       )}

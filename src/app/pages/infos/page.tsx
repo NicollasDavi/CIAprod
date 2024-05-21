@@ -1,7 +1,6 @@
 "use client"
 import axiosInstance from '../../../app/axiosInstance';
 import CourseCard from '../../../components/CourseCard';
-import PlusIcon from '../../../components/PlusIcon';
 import React, { useState, useEffect } from 'react';
 
 interface Course {
@@ -79,8 +78,6 @@ const Page = () => {
           />
         ))}
       </div>
-      <PlusIcon link='/pages/cursocreate' />
-
     </div>
   );
 }
