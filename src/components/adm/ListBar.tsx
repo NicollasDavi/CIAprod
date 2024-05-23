@@ -39,9 +39,7 @@ const ListBar = ({
     };
     return new Intl.DateTimeFormat('pt-BR', options).format(date);
   };
-
   const [message, setMessage] = useState<string>('');
-
   const handleDelete = () => {
     axiosInstance
       .delete(`/${route}`)
@@ -60,7 +58,6 @@ const ListBar = ({
         console.log('Error:', error);
       });
   };
-
   const handleDisable = () => {
     axiosInstance
       .patch(`/${routeDisable}/0`)
@@ -71,7 +68,6 @@ const ListBar = ({
         console.log('Error:', error);
       });
   };
-
   const handleEnable = () => {
     axiosInstance
       .patch(`/${routeDisable}/1`)
@@ -82,19 +78,18 @@ const ListBar = ({
         console.log('Error:', error);
       });
   };
-
   return (
     <>
     <div className="justify-around p-2 rounded-md shadow flex flex-row mt-3">
+      <div className='flex flex-row w-10/12 justify-around'>
           <h1>{ nome}</h1>
           <h1>{data1}</h1>
           <h1>{data2}</h1>
           <h1 className='hidden md:block'>Criado por: {criadoPor}</h1>
           <h1 className='hidden md:block'>Criado em: {formatDate(new Date(date))}</h1>
           <h1 className='md:hidden'>{formatDate(new Date(date))}</h1>
-   
-      
-      
+      </div>
+      <div className='flex flex-row w-2/12 justify-around'>
       <button className="p-1 rounded-lg bg-blue-500 ml-10 text-white mr-3 text-lg">
         <BiSolidEdit />
       </button>
@@ -121,13 +116,13 @@ const ListBar = ({
           <FaEye />
         </button>
       )}
-       
     </div>
     {message && (
       <div>
           <p className="text-red-500 absolute">{message}</p>
       </div>
   )}
+      </div> 
   </>
   );
 };

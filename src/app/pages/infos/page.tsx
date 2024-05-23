@@ -1,6 +1,6 @@
 "use client"
 import axiosInstance from '../../../app/axiosInstance';
-import CourseCard from '../../../components/CourseCard';
+import Card from '../../../components/Card';
 import React, { useState, useEffect } from 'react';
 
 interface Course {
@@ -9,7 +9,7 @@ interface Course {
 }
 
 interface Unidade {
-  id: string;
+  codigo: string;
   imagem: string;
 }
 
@@ -57,11 +57,11 @@ const Page = () => {
       </div>
       <div className='gap-4 md:gap-0 w-11/12 m-auto h-auto mb-10 md:pl-28 grid grid-cols-2 md:grid-cols-6'>
         {unidade.map(unidade => (
-          <CourseCard
-            key={unidade.id}
-            link={`/pages/curso/${unidade.id}`}
+          <Card
+            key={unidade.codigo}
+            link={`/pages/unidade/${unidade.codigo}`}
             src={unidade.imagem}
-            handleDelete={() => handleDelete(unidade.id)}
+            handleDelete={() => handleDelete(unidade.codigo)}
           />
         ))}
       </div>
@@ -70,7 +70,7 @@ const Page = () => {
       </div>
       <div className='gap-4 md:gap-0 w-11/12 m-auto h-auto mb-10 md:pl-28 grid grid-cols-2 md:grid-cols-6'>
         {data.map(course => (
-          <CourseCard
+          <Card
             key={course.id}
             link={`/pages/curso/${course.id}`}
             src={course.imagem}

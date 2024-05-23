@@ -1,9 +1,10 @@
 "use client"
 import axiosInstance from '../../../app/axiosInstance'
-import CourseCard from '../../../components/CourseCard'
+import CourseCard from '../../../components/Card'
 import DocCard from '../../../components/DocCard'
 import PlusIcon from '../../../components/PlusIcon'
 import React, { useEffect, useState } from 'react'
+import { useRenderContext } from '../../context/renderContext'
 const teste = "/pages/doc"
 
 interface DocData {
@@ -16,10 +17,12 @@ interface DocData {
 
 
 const Page = () => {
+  const { matricula, ...otherProps } = useRenderContext();
+
   const [data, setData] = useState<DocData[]>([]);
 
   useEffect(() => {
-    axiosInstance.get('/docs')
+    axiosInstance.get(`/docs/${matricula}`)
       .then(response => {
         setData(response.data);
       })

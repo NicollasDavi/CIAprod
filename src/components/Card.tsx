@@ -7,10 +7,10 @@ interface Card{
   src: string
   handleDelete: any
 }
-const CourseCard: React.FC<Card> = ({link, src, handleDelete}) => {
+const Card: React.FC<Card> = ({link, src, handleDelete}) => {
 
   return (
-    <div className='max-w-48 bg-[#3B82F6]/90 rounded-lg mb-10 '>
+    <div className='max-w-48 bg-[#3B82F6]/90 rounded-lg mb-10 shadow-xl'>
         <div>
             <Link href={link}>
                 <Image src={src} width={1000} height={100} alt={''} className='w-full rounded-lg '/>
@@ -20,4 +20,4 @@ const CourseCard: React.FC<Card> = ({link, src, handleDelete}) => {
   )
 }
 
-export default CourseCard
+export default Card

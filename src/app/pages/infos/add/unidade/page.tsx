@@ -1,5 +1,5 @@
 "use client";
-import axiosInstance from '../../../../../app/axiosInstance';
+import axiosInstance from '../../../../axiosInstance';
 import React, { useEffect, useState } from 'react';
 
 const Page = () => {

@@ -28,13 +28,24 @@ const Page = () => {
     const [isNotImageOpen, setIsNotImageOpen] = useState(false);
     const [isNotImageTextOpen, setIsNotImageTextOpen] = useState(false);
     const [newTypeText, setNewTypeText] = useState("");
-    const [doc, setDoc] = useState<{ userId: string ,nome: string; types: DocType[] }>({
+    const [publica, setPublica] = useState(false)
+    const [doc, setDoc] = useState<{publica: boolean, userId: string ,nome: string; types: DocType[] }>({
         nome: "",
         types: [],
-        userId: ""
+        userId: "",
+        publica
     });
     const [selectedNotType, setSelectedNotType] = useState<number | null>(null);
 
+    const handleSetPublica = () => {
+        setPublica(!publica);
+        setDoc(prevDoc => ({
+            ...prevDoc,
+            publica: !publica,
+        }));
+        console.log(publica)
+
+    };
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
     const closeText = () => setOpen(0);
@@ -86,7 +97,8 @@ const Page = () => {
         setDoc(prevDoc => ({
             ...prevDoc,
             nome: nome,
-            userId: matricula
+            userId: matricula,
+            publica: publica 
         }));
     }, [nome]);
 
@@ -150,9 +162,9 @@ const Page = () => {
 
     const removeItem = (indexToRemove: number) => {
         setDoc(prevDoc => {
-            const { nome, types, userId } = prevDoc;
+            const { nome, types, userId, publica } = prevDoc;
             const updatedTypes = types.filter((_, index) => index !== indexToRemove);
-            return { userId, nome, types: updatedTypes };
+            return { publica, userId, nome, types: updatedTypes };
         });
     };
 
@@ -188,7 +200,7 @@ const Page = () => {
             
                 {doc.types.map((item, index) => (
                     <div key={index} className='p-2 flex flex-row gap-2 '>
-                         <button className=' px-3 py-1 rounded-full w-[30px] text-center h-[30px] text-white' onClick={() => removeItem(index)}>R</button>
+                         <button className=' px-3 py-1 rounded-full w-[30px] text-center h-[30px] text-white bg-red-500' onClick={() => removeItem(index)}>R</button>
                         {item.type === 1 ? (
                              <section className='w-12/12 '>
                                 <p >{item.text}</p>
@@ -323,9 +335,25 @@ const Page = () => {
                 </DocsModal>
                     </section>
                 </div>
-               <section className='w-full '>
-                <button className='px-10 py-1 text-white rounded-3xl bg-blue-500 ml-3 mt-10' onClick={() => env()}>Salvar</button>
-               </section>
+                <section className='w-full flex flex-row'>
+                    <button 
+                        className='px-10 py-1 text-white rounded-3xl bg-blue-500 ml-3 mt-10' 
+                        onClick={() => env()}
+                    >
+                        Salvar
+                    </button>
+                    <section className='h-full flex items-center justify-center ml-3 mt-10'>
+                        <input 
+                            type="checkbox" 
+                            onChange={() => handleSetPublica()} 
+                            id="publica-checkbox"
+                        />
+                        <label htmlFor="publica-checkbox" className='ml-3'>
+                            Publica
+                        </label>
+                    </section>
+                </section>
+
             </div>
         </div>
     );
