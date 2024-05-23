@@ -5,14 +5,12 @@ import axiosInstance from '../../axiosInstance';
 import { useRenderContext } from '../../../app/context/renderContext';
 import { useRouter } from 'next/navigation'
 
-
 interface Unidade {
-  id: string;
+  codigo: string;
   nome: string;
   createdAt: any;
   vcep: any;
   active: boolean;
-
 }
 
 interface Curso {
@@ -22,7 +20,6 @@ interface Curso {
   unidade: string;
   turno: string;
   active: boolean;
-
 }
 
 interface Valores {
@@ -34,14 +31,13 @@ interface Valores {
   active: boolean;
 }
 
+
 const Page = () => {
   const { admin } = useRenderContext();
   const [unidades, setUnidades] = useState<Unidade[]>([]);
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [valores, setValores] = useState<Valores[]>([]);
   const router = useRouter()
-
-
   useEffect(() => {
     axiosInstance.get('/all/unidades')
       .then(response => {
@@ -62,8 +58,6 @@ const Page = () => {
       });
   }, []);
 
-  
-
   useEffect(() => {
     axiosInstance.get('/all/valores')
       .then(response => {
@@ -73,6 +67,36 @@ const Page = () => {
         console.error('Erro ao buscar valores:', error);
       });
   }, []);
+
+  const handleUnidadeDelete = (codigo: string) => {
+    setUnidades(unidades.filter(unidade => unidade.codigo !== codigo));
+  };
+
+  const handleUnidadeStatusChange = (codigo: string, newStatus: boolean) => {
+    setUnidades(unidades.map(unidade => 
+      unidade.codigo === codigo ? { ...unidade, active: newStatus } : unidade
+    ));
+  };
+
+  const handleCursoDelete = (id: string) => {
+    setCursos(cursos.filter(curso => curso.id !== id));
+  };
+
+  const handleCursoStatusChange = (id: string, newStatus: boolean) => {
+    setCursos(cursos.map(curso => 
+      curso.id === id ? { ...curso, active: newStatus } : curso
+    ));
+  };
+
+  const handleValorDelete = (id: string) => {
+    setValores(valores.filter(valor => valor.id !== id));
+  };
+
+  const handleValorStatusChange = (id: string, newStatus: boolean) => {
+    setValores(valores.map(valor => 
+      valor.id === id ? { ...valor, active: newStatus } : valor
+    ));
+  };
 
   return (
     <div className='pt-8 w-screen'>
@@ -86,15 +110,17 @@ const Page = () => {
                 <hr />
                 {unidades.map(unidade => (
                   <ListBar
-                    key={unidade.id}
+                    key={unidade.codigo}
                     nome={unidade.nome}
                     date={unidade.createdAt}
                     data1={unidade.vcep}
                     data2=""
                     criadoPor="Nicollas"
-                    route={`unidade/${unidade.id}`}
+                    route={`unidade/${unidade.codigo}`}
                     active={unidade.active}
-                    routeDisable={`unidade/${unidade.id}`}
+                    routeDisable={`unidade/${unidade.codigo}`}
+                    onDelete={() => handleUnidadeDelete(unidade.codigo)}
+                    onStatusChange={(newStatus) => handleUnidadeStatusChange(unidade.codigo, newStatus)}
                   />
                 ))}
               </section>
@@ -113,7 +139,9 @@ const Page = () => {
                     data1={curso.unidade}
                     data2={curso.turno}
                     route={`curso/delete/${curso.id}`}
-                    routeDisable={`unidade/${curso.id}`}
+                    routeDisable={`curso/${curso.id}`}
+                    onDelete={() => handleCursoDelete(curso.id)}
+                    onStatusChange={(newStatus) => handleCursoStatusChange(curso.id, newStatus)}
                   />
                 ))}
               </section>
@@ -133,6 +161,8 @@ const Page = () => {
                     date={valor.createdAt}
                     route={`valor/${valor.id}`}
                     routeDisable={`valor/${valor.id}`}
+                    onDelete={() => handleValorDelete(valor.id)}
+                    onStatusChange={(newStatus) => handleValorStatusChange(valor.id, newStatus)}
                   />
                 ))}
               </section>

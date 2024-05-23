@@ -1,10 +1,10 @@
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
 import { MdDeleteForever } from 'react-icons/md';
 import { BiSolidEdit } from 'react-icons/bi';
 import axiosInstance from '@/src/app/axiosInstance';
 import { GiSightDisabled } from "react-icons/gi";
 import { FaEye } from "react-icons/fa";
-
 
 const ListBar = ({
   nome,
@@ -14,7 +14,9 @@ const ListBar = ({
   criadoPor,
   route,
   active,
-  routeDisable
+  routeDisable,
+  onDelete,
+  onStatusChange
 }: {
   nome: string;
   date: Date;
@@ -23,7 +25,9 @@ const ListBar = ({
   criadoPor: any;
   route: string;
   routeDisable: string;
-  active:boolean;
+  active: boolean;
+  onDelete: () => void;
+  onStatusChange: (newStatus: boolean) => void;
 }) => {
   const formatDate = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -36,10 +40,21 @@ const ListBar = ({
     return new Intl.DateTimeFormat('pt-BR', options).format(date);
   };
 
+  const [message, setMessage] = useState<string>('');
+
   const handleDelete = () => {
     axiosInstance
       .delete(`/${route}`)
       .then(response => {
+        if (response.data.COD === 200) {
+          setMessage(response.data.MESSAGE);
+          console.log(message)
+          setTimeout(() => {
+            setMessage('');
+          }, 4000);
+        } else {
+          onDelete();
+        }
       })
       .catch(error => {
         console.log('Error:', error);
@@ -50,6 +65,7 @@ const ListBar = ({
     axiosInstance
       .patch(`/${routeDisable}/0`)
       .then(response => {
+        onStatusChange(false);
       })
       .catch(error => {
         console.log('Error:', error);
@@ -60,6 +76,7 @@ const ListBar = ({
     axiosInstance
       .patch(`/${routeDisable}/1`)
       .then(response => {
+        onStatusChange(true);
       })
       .catch(error => {
         console.log('Error:', error);
@@ -67,42 +84,51 @@ const ListBar = ({
   };
 
   return (
+    <>
     <div className="justify-around p-2 rounded-md shadow flex flex-row mt-3">
-      <h1>{nome}</h1>
-      <h1>{data1}</h1>
-      <h1>{data2}</h1>
-      <h1 className='hidden md:block'>Criado por: {criadoPor}</h1>
-      <h1 className='hidden md:block'>Criado por: {criadoPor}</h1>
-      <h1 className='hidden md:block'>Criado em: {formatDate(new Date(date))}</h1>
-      <h1 className=' md:hidden'>{formatDate(new Date(date))}</h1>
+          <h1>{ nome}</h1>
+          <h1>{data1}</h1>
+          <h1>{data2}</h1>
+          <h1 className='hidden md:block'>Criado por: {criadoPor}</h1>
+          <h1 className='hidden md:block'>Criado em: {formatDate(new Date(date))}</h1>
+          <h1 className='md:hidden'>{formatDate(new Date(date))}</h1>
+   
+      
+      
       <button className="p-1 rounded-lg bg-blue-500 ml-10 text-white mr-3 text-lg">
         <BiSolidEdit />
       </button>
-      {!active ? <>
+      {!active ? (
+        <>
+          <button
+            className="p-1 rounded-lg bg-red-500 text-white mr-3"
+            onClick={handleDelete}
+          >
+            <MdDeleteForever />
+          </button>
+          <button
+            className="p-1 rounded-lg bg-red-500 text-white mr-3"
+            onClick={handleEnable}
+          >
+            <GiSightDisabled />
+          </button>
+        </>
+      ) : (
         <button
-        className="p-1 rounded-lg bg-red-500 text-white mr-3"
-        onClick={handleDelete}
-      >
-        <MdDeleteForever />
-      </button>
-      <button
-        className="p-1 rounded-lg bg-red-500 text-white mr-3"
-        onClick={handleEnable}
-      >
-        <GiSightDisabled />
-      </button>
-      
-      </>
-      : 
-      <button
-        className="p-1 rounded-lg bg-blue-500 text-white mr-3"
-        onClick={handleDisable}
-      >
-        <FaEye />
-      </button>}
-        
-      
+          className="p-1 rounded-lg bg-blue-500 text-white mr-3"
+          onClick={handleDisable}
+        >
+          <FaEye />
+        </button>
+      )}
+       
     </div>
+    {message && (
+      <div>
+          <p className="text-red-500 absolute">{message}</p>
+      </div>
+  )}
+  </>
   );
 };
 
