@@ -24,8 +24,19 @@ const Page: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [unidades, setUnidades] = useState<Unidade[]>([]);
-  const [mensalidade, setMensalidade] = useState<string>("");
+
+  const [mensalidadeManha, setMensalidadeManha] = useState<string>("");
+  const [mensalidadeTarde, setMensalidadeTarde] = useState<string>("");
+  const [mensalidadeNoite, setMensalidadeNoite] = useState<string>("");
+  const [mensalidadeOnline, setMensalidadeOnline] = useState<string>("");
+  const [mensalidadeManhaDesconto, setMensalidadeManhaDesconto] = useState<string>("");
+  const [mensalidadeTardeDesconto, setMensalidadeTardeDesconto] = useState<string>("");
+  const [mensalidadeNoiteDesconto, setMensalidadeNoiteDesconto] = useState<string>("");
+  const [mensalidadeOnlineDesconto, setMensalidadeOnlineDesconto] = useState<string>("");
+ 
+
   const [stateOfCalc, setStateOfCalc] = useState<boolean>(true);
+  const [nome, setNome] = useState<string>("")
 
   useEffect(() => {
     const fetchCursos = async () => {
@@ -66,7 +77,7 @@ const Page: React.FC = () => {
       };
 
       const response = await axiosInstance.post(reqUrl, curso);
-      setMensalidade(response.data.mensalidade);
+      setMensalidadeManha(response.data.m);
     } catch (error) {
       console.error("Erro ao calcular:", error);
       setError("Ocorreu um erro ao calcular. Por favor, tente novamente.");
@@ -81,6 +92,8 @@ const Page: React.FC = () => {
         <h1 className="ml-1 pb-2 pt-10 md:pt-12">Calcular Mensalidade</h1>
       </div>
       <CourseSelectionForm
+      setNome={setNome}
+        nome={nome}
         cursos={cursos}
         unidades={unidades}
         cursoId={cursoId}
@@ -102,7 +115,26 @@ const Page: React.FC = () => {
         </button>
       </section>
       {error && <div className="mt-4 text-red-500">{error}</div>}
-      <CalcResult aluno='Nicollas Davi de Souza Brandão' curso={cursoId} mensalidade={mensalidade} parcelamento={parcelamento} turno={turno} unidade={unidade}/>
+      <CalcResult 
+        aluno='Nicollas Davi de Souza Brandão'
+        curso={nome}
+        mensalidade={''}
+        parcelamento={parcelamento}
+        turno={turno}
+        unidade={unidade} 
+        desconto={undefined} 
+        turnoManha={''} 
+        turnoTarde={''} 
+        turnoNoite={''} 
+        turnoOnline={''} 
+        mensalidadeManha={mensalidadeManha} 
+        mensalidadeTarde={mensalidadeTarde} 
+        mensalidadeNoite={mensalidadeNoite} 
+        mensalidadeOnline={mensalidadeOnline} 
+        mensalidadeManhaDesconto={mensalidadeManhaDesconto} 
+        mensalidadeTardeDesconto={mensalidadeManha} 
+        mensalidadeNoiteDesconto={mensalidadeManha} 
+        mensalidadeOnlineDesconto={mensalidadeManha}/>
     </div>
   );
 };

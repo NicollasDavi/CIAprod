@@ -14,10 +14,10 @@ export default function Home() {
 
 
   const handleRedirect = () => {
-    // localStorage.setItem('token', "tem")
-    // localStorage.setItem('admin', "false")
-    // setLoading(true)
-    // window.location.replace('/pages/home');
+    localStorage.setItem('token', "tem")
+    localStorage.setItem('admin', "false")
+    setLoading(true)
+    return window.location.replace('/pages/home');
     
    
 

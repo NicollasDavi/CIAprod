@@ -24,12 +24,12 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body>
-        <RenderProvider >
+        {/* <RenderProvider > */}
           <Header />
           <AsideBar />
           <MobileAsideBar />
           <div>{children}</div>
-        </RenderProvider>
+        {/* </RenderProvider> */}
       </body>
     </html>
   );
