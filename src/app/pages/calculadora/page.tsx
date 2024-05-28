@@ -33,7 +33,6 @@ const Page: React.FC = () => {
   const [mensalidadeTardeDesconto, setMensalidadeTardeDesconto] = useState<string>("");
   const [mensalidadeNoiteDesconto, setMensalidadeNoiteDesconto] = useState<string>("");
   const [mensalidadeOnlineDesconto, setMensalidadeOnlineDesconto] = useState<string>("");
- 
 
   const [stateOfCalc, setStateOfCalc] = useState<boolean>(true);
   const [nome, setNome] = useState<string>("")
@@ -69,15 +68,23 @@ const Page: React.FC = () => {
 
     try {
       const curso = {
-        id: cursoId,
+        nome: nome,
         unidade,
-        turno,
         parcelamento: Number(parcelamento),
         desconto: desconto
       };
 
       const response = await axiosInstance.post(reqUrl, curso);
-      setMensalidadeManha(response.data.m);
+      const data = response.data;
+
+      setMensalidadeManha(data.mensalidadeManha);
+      setMensalidadeTarde(data.mensalidadeTarde);
+      setMensalidadeNoite(data.mensalidadeNoite);
+      setMensalidadeOnline(data.mensalidadeOnline);
+      setMensalidadeManhaDesconto(data.mensalidadeManhaDesconto);
+      setMensalidadeTardeDesconto(data.mensalidadeTardeDesconto);
+      setMensalidadeNoiteDesconto(data.mensalidadeNoiteDesconto);
+      setMensalidadeOnlineDesconto(data.mensalidadeOnlineDesconto);
     } catch (error) {
       console.error("Erro ao calcular:", error);
       setError("Ocorreu um erro ao calcular. Por favor, tente novamente.");
@@ -92,7 +99,7 @@ const Page: React.FC = () => {
         <h1 className="ml-1 pb-2 pt-10 md:pt-12">Calcular Mensalidade</h1>
       </div>
       <CourseSelectionForm
-      setNome={setNome}
+        setNome={setNome}
         nome={nome}
         cursos={cursos}
         unidades={unidades}
@@ -123,7 +130,7 @@ const Page: React.FC = () => {
         turno={turno}
         unidade={unidade} 
         desconto={undefined} 
-        turnoManha={''} 
+        turnoManha={'Manha'} 
         turnoTarde={''} 
         turnoNoite={''} 
         turnoOnline={''} 
@@ -132,9 +139,10 @@ const Page: React.FC = () => {
         mensalidadeNoite={mensalidadeNoite} 
         mensalidadeOnline={mensalidadeOnline} 
         mensalidadeManhaDesconto={mensalidadeManhaDesconto} 
-        mensalidadeTardeDesconto={mensalidadeManha} 
-        mensalidadeNoiteDesconto={mensalidadeManha} 
-        mensalidadeOnlineDesconto={mensalidadeManha}/>
+        mensalidadeTardeDesconto={mensalidadeTardeDesconto} 
+        mensalidadeNoiteDesconto={mensalidadeNoiteDesconto} 
+        mensalidadeOnlineDesconto={mensalidadeOnlineDesconto}
+      />
     </div>
   );
 };
