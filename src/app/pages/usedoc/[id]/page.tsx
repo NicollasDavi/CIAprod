@@ -38,6 +38,22 @@ const [doc, setDoc] = useState<any[]>([]);
       });
   }
 
+  const renderParagraphsWithIndentation = (text: string) => {
+    const paragraphs = text.split('\n');
+    const indentedParagraphs = paragraphs.map((paragraph, index) => {
+      if (index === 0 || !paragraph.trim()) {
+        return paragraph;
+      } else {
+        return `    ${paragraph.trim()}`; 
+      }
+    });
+    return indentedParagraphs.map((paragraph, index) => (
+      <p key={index} className="mb-4">
+        {paragraph}
+      </p>
+    ));
+  };
+
   return (
     <div className='pt-8'>
       <div className='w-11/12 md:w-9/12 m-auto h-auto mb-10'>
@@ -57,13 +73,13 @@ const [doc, setDoc] = useState<any[]>([]);
             <div key={docItem.id} className='p-2 flex flex-row gap-2'>
               {docItem.type === 1 ? (
                 <section className='w-12/12'>
-                  <p>{docItem.text}</p>
+                  <p>{renderParagraphsWithIndentation(docItem.text)}</p>
                 </section>
               ) : null}
               {docItem.type === 2 ? (
                 <div className='flex flex-row gap-2 w-full'>
                   <section className='w-6/12'>
-                    <p>{docItem.text}</p>
+                    <p>{renderParagraphsWithIndentation(docItem.text)}</p>
                   </section>
                   <section className='w-6/12'>
                     <img src={docItem.img} alt="Imagem escolhida" className='h-auto max-h-[500px] rounded-xl m-auto' />
@@ -76,7 +92,7 @@ const [doc, setDoc] = useState<any[]>([]);
                     <img src={docItem.img} alt="Imagem escolhida" className=' h-auto max-h-[500px] rounded-xl m-auto' />
                   </section>
                   <section className='w-6/12 '>
-                    <p>{docItem.text}</p>
+                    <p>{renderParagraphsWithIndentation(docItem.text)}</p>
                   </section>
                 </div>
               ) : null}

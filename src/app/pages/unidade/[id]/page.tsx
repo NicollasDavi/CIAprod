@@ -23,10 +23,28 @@ interface Course {
   imagem: string;
 }
 
+
+
 const Page = () => {
   const id = window.location.pathname.split('/').pop();
   const [data, setData] = useState<Unidade>();
   const [cursos, setCursos] = useState<Course[]>([]);
+
+  const renderParagraphsWithIndentation = (text: string) => {
+    const paragraphs = text.split('\n');
+    const indentedParagraphs = paragraphs.map((paragraph, index) => {
+      if (index === 0 || !paragraph.trim()) {
+        return paragraph;
+      } else {
+        return `    ${paragraph.trim()}`; 
+      }
+    });
+    return indentedParagraphs.map((paragraph, index) => (
+      <p key={index} className="mb-4">
+        {paragraph}
+      </p>
+    ));
+  };
 
   useEffect(() => {
     if (id) {
@@ -95,7 +113,7 @@ const Page = () => {
         </div>
         <div className='md:pt-5 pt-32'>
           <h1 className='text-sm pb-8'>Sobre a Unidade</h1>
-          <p className='w-11/12'>{data && data.informacoes}</p>
+          <p className='w-11/12'>{data && renderParagraphsWithIndentation(data.informacoes)}</p>
         </div>
       </div>
     </div>

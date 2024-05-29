@@ -66,7 +66,7 @@ const CalcResult: React.FC<CalcResultProps> = ({
       if (turnoTarde) content += `☀️ ${turnoTarde} : ${parcelamento}x de R$ ${mensalidadeTardeDesconto}\n`;
       if (turnoNoite) content += `🌙 ${turnoNoite} : ${parcelamento}x de R$ ${mensalidadeNoiteDesconto}\n`;
       if (turnoOnline) content += `💻 ${turnoOnline} : ${parcelamento}x de R$ ${mensalidadeOnlineDesconto}\n\n`;
-      <h1>Condição válida até {`${formatDate(dataLimite)}`}</h1>
+      content += `${formatDate(dataLimite)}`
     }
   
     navigator.clipboard.writeText(content);

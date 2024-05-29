@@ -93,6 +93,23 @@ const Page = () => {
         }
     }, [open]);
 
+    const renderParagraphsWithIndentation = (text: string) => {
+        const paragraphs = text.split('\n');
+        const indentedParagraphs = paragraphs.map((paragraph, index) => {
+          if (index === 0 || !paragraph.trim()) {
+            return paragraph;
+          } else {
+            return `    ${paragraph.trim()}`; 
+          }
+        });
+        return indentedParagraphs.map((paragraph, index) => (
+          <p key={index} className="mb-4">
+            {paragraph}
+          </p>
+        ));
+      };
+
+
     useEffect(() => {
         setDoc(prevDoc => ({
             ...prevDoc,
@@ -203,13 +220,13 @@ const Page = () => {
                          <button className=' px-3 py-1 rounded-full w-[30px] text-center h-[30px] text-white bg-red-500' onClick={() => removeItem(index)}>R</button>
                         {item.type === 1 ? (
                              <section className='w-12/12 '>
-                                <p >{item.text}</p>
+                                <p >{renderParagraphsWithIndentation(item.text)}</p>
                            </section>
                         ) : ""}
                         {item.type === 2 ?(
                             <div className='flex flex-row gap-2 w-full'>
                                <section className='w-6/12 '>
-                                 <p >{item.text}</p>
+                                 <p >{renderParagraphsWithIndentation(item.text)}</p>
                                </section>
                                <section className='w-6/12 '>
                                     <img src={item.img} alt="Imagem escolhida" className=' h-auto max-h-[500px] rounded-xl m-auto'/>
@@ -221,7 +238,7 @@ const Page = () => {
                                     <img src={item.img} alt="Imagem escolhida" className=' h-auto max-h-[500px] rounded-xl m-auto'/>
                                 </section>
                                <section className='w-6/12 '>
-                                 <p >{item.text}</p>
+                                 <p >{renderParagraphsWithIndentation(item.text)}</p>
                                </section>
                             </div>
                         ) : "" }
