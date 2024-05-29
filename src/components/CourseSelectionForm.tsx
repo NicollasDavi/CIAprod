@@ -20,7 +20,8 @@ interface CourseSelectionFormProps {
   desconto: number;
   setCursoId: (id: string) => void;
   setUnidade: (unidade: string) => void;
-  setTurno: (turno: string) => void;
+  setDate: (date: Date) => void;
+  setCliente: (turno: string) => void;
   setParcelamento: (parcelamento: number) => void;
   setDesconto: (desconto: number) => void;
   setStateOfCalc: (state: boolean) => void;
@@ -28,7 +29,6 @@ interface CourseSelectionFormProps {
   stateOfCalc: boolean;
   nome: string;
 }
-
 const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
   cursos,
   unidades,
@@ -39,12 +39,13 @@ const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
   desconto,
   setCursoId,
   setUnidade,
-  setTurno,
+  setCliente,
   setParcelamento,
   setDesconto,
   setStateOfCalc,
   stateOfCalc,
   nome,
+  setDate,
   setNome
 }) => {
   const handleCursoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -53,6 +54,38 @@ const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
     if (selectedCurso) {
       setCursoId(selectedValue);
       setNome(selectedCurso.nome);
+    }
+  };
+
+  const renderInputs = () => {
+    if (stateOfCalc) {
+      return (
+        <>
+          <input 
+            type="text" 
+            placeholder="Cliente" 
+            className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2"  
+            onChange={(e) => setCliente(e.target.value)} 
+          />
+          <input 
+            type="date" 
+            placeholder="Data Limite" 
+            className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2"  
+            onChange={(e) => setDate(new Date(e.target.value))} 
+          />
+        </>
+      );
+    } else {
+      return (
+        <select 
+          className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
+        >
+          <option value="M">Manhã</option>
+          <option value="T">Tarde</option>
+          <option value="N">Noite</option>
+          <option value="O">Online</option>
+        </select>
+      );
     }
   };
 
@@ -73,7 +106,6 @@ const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
             <option key={curso.id} value={curso.id}>{curso.nome}</option>
           ))}
         </select>
-
         <select 
           value={unidade} 
           onChange={(e) => setUnidade(e.target.value)} 
@@ -84,26 +116,13 @@ const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
             <option key={unidade.codigo} value={unidade.nome}>{unidade.nome}</option>
           ))}
         </select>
-
-        <select 
-          value={turno} 
-          className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
-          onChange={(e) => setTurno(e.target.value)}
-        >
-          <option value="">Selecione um turno</option>
-          <option value="Manhã">Manhã</option>
-          <option value="Tarde">Tarde</option>
-          <option value="Noite">Noite</option>
-          <option value="Online">Online</option>
-        </select>
-
         <input 
           type="number" 
           placeholder="Parcelamento" 
           className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2"  
           onChange={(e) => setParcelamento(Number(e.target.value))} 
         />
-
+        {renderInputs()}
         <input 
           type="number" 
           placeholder="Desconto" 
@@ -115,4 +134,4 @@ const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
   );
 };
 
-export default CourseSelectionForm;
+export default CourseSelectionForm

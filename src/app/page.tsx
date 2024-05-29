@@ -14,36 +14,36 @@ export default function Home() {
 
 
   const handleRedirect = () => {
-    // localStorage.setItem('token', "tem")
-    // localStorage.setItem('admin', "false")
-    // setLoading(true)
-    // window.location.replace('/pages/home');
+    localStorage.setItem('token', "tem")
+    localStorage.setItem('admin', "true")
+    setLoading(true)
+    window.location.replace('/pages/home');
     
    
 
 
-    const newMatricula = parseInt(matricula)
-    const data = {
-      matricula: newMatricula,
-      senha: senha
-    };
+  //   const newMatricula = parseInt(matricula)
+  //   const data = {
+  //     matricula: newMatricula,
+  //     senha: senha
+  //   };
   
-  axiosInstance.post('/login', data)
-      .then(response => {
-        localStorage.setItem('token', response.data.TOKEN)
-        localStorage.setItem('admin', response.data.ADM)
-        localStorage.setItem('matricula', response.data.MAT)
-        localStorage.setItem('nome', response.data.USER)
-        const redirectUrl = response.data.URL; 
-      router.push(redirectUrl); 
-      })
-      .catch(error => {
-          console.error('Erro:', error);
-          setError("bah né guri")
-          setTimeout(() => {
-            setError("")
-          }, 3000)
-      });
+  // axiosInstance.post('/login', data)
+  //     .then(response => {
+  //       localStorage.setItem('token', response.data.TOKEN)
+  //       localStorage.setItem('admin', response.data.ADM)
+  //       localStorage.setItem('matricula', response.data.MAT)
+  //       localStorage.setItem('nome', response.data.USER)
+  //       const redirectUrl = response.data.URL; 
+  //     router.push(redirectUrl); 
+  //     })
+  //     .catch(error => {
+  //         console.error('Erro:', error);
+  //         setError("bah né guri")
+  //         setTimeout(() => {
+  //           setError("")
+  //         }, 3000)
+  //     });
   };
   return (
     <main className={styles.main}>

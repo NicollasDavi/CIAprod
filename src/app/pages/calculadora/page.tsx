@@ -17,13 +17,19 @@ interface Unidade {
 const Page: React.FC = () => {
   const [cursoId, setCursoId] = useState<string>("");
   const [unidade, setUnidade] = useState<string>("");
-  const [turno, setTurno] = useState<string>("");
+  const [aluno, setAluno] = useState<string>("");
   const [parcelamento, setParcelamento] = useState<number>(0);
   const [desconto, setDesconto] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [unidades, setUnidades] = useState<Unidade[]>([]);
+  const [data, setData] = useState<Date>()
+  const [turno, setTurno] = useState<string>("");
+
+
+  const [mensalidadeInv, setMensalidadeInv] = useState<string>("");
+
 
   const [mensalidadeManha, setMensalidadeManha] = useState<string>("");
   const [mensalidadeTarde, setMensalidadeTarde] = useState<string>("");
@@ -41,12 +47,17 @@ const Page: React.FC = () => {
     const fetchCursos = async () => {
       try {
         const response = await axiosInstance.get('/valores');
-        setCursos(response.data);
+        const uniqueCursos = response.data.filter((curso: Curso, index: number, self: Curso[]) => {
+          return index === self.findIndex((c: Curso) => (
+            c.nome === curso.nome
+          ));
+        });
+        setCursos(uniqueCursos);
       } catch (error) {
         console.error('Erro ao buscar cursos:', error);
       }
     };
-
+  
     const fetchUnidades = async () => {
       try {
         const response = await axiosInstance.get('/unidades');
@@ -55,10 +66,11 @@ const Page: React.FC = () => {
         console.error('Erro ao buscar unidades:', error);
       }
     };
-
+  
     fetchCursos();
     fetchUnidades();
   }, []);
+  
 
   const handleEnv = async () => {
     setLoading(true);
@@ -76,15 +88,19 @@ const Page: React.FC = () => {
 
       const response = await axiosInstance.post(reqUrl, curso);
       const data = response.data;
-
-      setMensalidadeManha(data.mensalidadeManha);
-      setMensalidadeTarde(data.mensalidadeTarde);
-      setMensalidadeNoite(data.mensalidadeNoite);
-      setMensalidadeOnline(data.mensalidadeOnline);
-      setMensalidadeManhaDesconto(data.mensalidadeManhaDesconto);
-      setMensalidadeTardeDesconto(data.mensalidadeTardeDesconto);
-      setMensalidadeNoiteDesconto(data.mensalidadeNoiteDesconto);
-      setMensalidadeOnlineDesconto(data.mensalidadeOnlineDesconto);
+      if (stateOfCalc){
+        setMensalidadeManha(data.mensalidadeManha);
+        setMensalidadeTarde(data.mensalidadeTarde);
+        setMensalidadeNoite(data.mensalidadeNoite);
+        setMensalidadeOnline(data.mensalidadeOnline);
+        setMensalidadeManhaDesconto(data.mensalidadeManhaDesconto);
+        setMensalidadeTardeDesconto(data.mensalidadeTardeDesconto);
+        setMensalidadeNoiteDesconto(data.mensalidadeNoiteDesconto);
+        setMensalidadeOnlineDesconto(data.mensalidadeOnlineDesconto);
+      }else{
+        setMensalidadeInv(data.mensalidade)
+      }
+      
     } catch (error) {
       console.error("Erro ao calcular:", error);
       setError("Ocorreu um erro ao calcular. Por favor, tente novamente.");
@@ -105,44 +121,50 @@ const Page: React.FC = () => {
         unidades={unidades}
         cursoId={cursoId}
         unidade={unidade}
-        turno={turno}
         parcelamento={parcelamento}
         desconto={desconto}
         setCursoId={setCursoId}
         setUnidade={setUnidade}
-        setTurno={setTurno}
+        setCliente={setAluno}
         setParcelamento={setParcelamento}
         setDesconto={setDesconto}
         setStateOfCalc={setStateOfCalc}
         stateOfCalc={stateOfCalc}
-      />
+        setDate={setData} 
+        turno={''}      />
       <section className="mt-10 w-11/12 items-center flex">
         <button className="m-auto w-10/12 md:w-4/12 py-3 text-white bg-[#3B82F6] rounded-lg" onClick={handleEnv} disabled={loading}>
           {loading ? "Aguarde..." : "Calcular"}
         </button>
       </section>
       {error && <div className="mt-4 text-red-500">{error}</div>}
-      <CalcResult 
-        aluno='Nicollas Davi de Souza Brandão'
-        curso={nome}
-        mensalidade={''}
-        parcelamento={parcelamento}
-        turno={turno}
-        unidade={unidade} 
-        desconto={undefined} 
-        turnoManha={'Manha'} 
-        turnoTarde={''} 
-        turnoNoite={''} 
-        turnoOnline={''} 
-        mensalidadeManha={mensalidadeManha} 
-        mensalidadeTarde={mensalidadeTarde} 
-        mensalidadeNoite={mensalidadeNoite} 
-        mensalidadeOnline={mensalidadeOnline} 
-        mensalidadeManhaDesconto={mensalidadeManhaDesconto} 
-        mensalidadeTardeDesconto={mensalidadeTardeDesconto} 
-        mensalidadeNoiteDesconto={mensalidadeNoiteDesconto} 
-        mensalidadeOnlineDesconto={mensalidadeOnlineDesconto}
-      />
+      <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-200 rounded-xl p-4 mt-72 lg:mt-48'>
+
+        <CalcResult 
+          aluno={aluno}
+          curso={nome}
+          mensalidade={mensalidadeInv}
+          parcelamento={parcelamento}
+          unidade={unidade}
+          dataLimite={data ? data : new Date}
+          desconto={desconto}
+          turnoManha={mensalidadeManha ? "Manhã" : ""}
+          turnoTarde={mensalidadeTarde ? "Tarde" : ""}
+          turnoNoite={mensalidadeNoite ? "Noite" : ""}
+          turnoOnline={mensalidadeOnline ? "Online" : ""}
+          mensalidadeManha={mensalidadeManha}
+          mensalidadeTarde={mensalidadeTarde}
+          mensalidadeNoite={mensalidadeNoite}
+          mensalidadeOnline={mensalidadeOnline}
+          mensalidadeManhaDesconto={mensalidadeManhaDesconto}
+          mensalidadeTardeDesconto={mensalidadeTardeDesconto}
+          mensalidadeNoiteDesconto={mensalidadeNoiteDesconto}
+          mensalidadeOnlineDesconto={mensalidadeOnlineDesconto}
+          turno={turno}        
+          state={stateOfCalc}
+        />
+      </div>
+      
     </div>
   );
 };
