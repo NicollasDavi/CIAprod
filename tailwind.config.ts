@@ -8,22 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
       keyframes: {
         worm1: {
-          '0%': { strokeDashoffset: '0' },
+          '0%, 100%': { strokeDashoffset: '0' },
           '50%': { strokeDashoffset: '-358' },
-          '50.01%': { strokeDashoffset: '358' },
-          '100%': { strokeDashoffset: '0' },
         },
         worm2: {
-          '0%': { strokeDashoffset: '358' },
+          '0%, 100%': { strokeDashoffset: '358' },
           '50%': { strokeDashoffset: '0' },
-          '100%': { strokeDashoffset: '-358' },
         },
       },
       animation: {
@@ -43,4 +35,5 @@ const config: Config = {
   },
   plugins: [],
 };
+
 export default config;

@@ -21,7 +21,8 @@ interface CourseSelectionFormProps {
   setCursoId: (id: string) => void;
   setUnidade: (unidade: string) => void;
   setDate: (date: Date) => void;
-  setCliente: (turno: string) => void;
+  setTurno: (state : string) => void;
+  setCliente: (state: string) => void;
   setParcelamento: (parcelamento: number) => void;
   setDesconto: (desconto: number) => void;
   setStateOfCalc: (state: boolean) => void;
@@ -37,6 +38,7 @@ const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
   turno,
   parcelamento,
   desconto,
+  setTurno,
   setCursoId,
   setUnidade,
   setCliente,
@@ -79,6 +81,7 @@ const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
       return (
         <select 
           className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
+          onChange={(e) => setTurno(e.target.value)}
         >
           <option value="M">Manhã</option>
           <option value="T">Tarde</option>

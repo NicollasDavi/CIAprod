@@ -24,12 +24,10 @@ const Page: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [unidades, setUnidades] = useState<Unidade[]>([]);
-  const [data, setData] = useState<Date>()
+  const [data, setData] = useState<Date>();
   const [turno, setTurno] = useState<string>("");
 
-
   const [mensalidadeInv, setMensalidadeInv] = useState<string>("");
-
 
   const [mensalidadeManha, setMensalidadeManha] = useState<string>("");
   const [mensalidadeTarde, setMensalidadeTarde] = useState<string>("");
@@ -41,7 +39,7 @@ const Page: React.FC = () => {
   const [mensalidadeOnlineDesconto, setMensalidadeOnlineDesconto] = useState<string>("");
 
   const [stateOfCalc, setStateOfCalc] = useState<boolean>(true);
-  const [nome, setNome] = useState<string>("")
+  const [nome, setNome] = useState<string>("");
 
   useEffect(() => {
     const fetchCursos = async () => {
@@ -70,7 +68,18 @@ const Page: React.FC = () => {
     fetchCursos();
     fetchUnidades();
   }, []);
-  
+
+  useEffect(() => {
+    setMensalidadeInv("");
+    setMensalidadeManha("");
+    setMensalidadeTarde("");
+    setMensalidadeNoite("");
+    setMensalidadeOnline("");
+    setMensalidadeManhaDesconto("");
+    setMensalidadeTardeDesconto("");
+    setMensalidadeNoiteDesconto("");
+    setMensalidadeOnlineDesconto("");
+  }, [cursoId, unidade, aluno, parcelamento, desconto, turno]);
 
   const handleEnv = async () => {
     setLoading(true);
@@ -80,7 +89,7 @@ const Page: React.FC = () => {
 
     try {
       const curso = {
-        nome: nome,
+        nome,
         unidade,
         parcelamento: Number(parcelamento),
         desconto: desconto
@@ -88,7 +97,7 @@ const Page: React.FC = () => {
 
       const response = await axiosInstance.post(reqUrl, curso);
       const data = response.data;
-      if (stateOfCalc){
+      if (stateOfCalc) {
         setMensalidadeManha(data.mensalidadeManha);
         setMensalidadeTarde(data.mensalidadeTarde);
         setMensalidadeNoite(data.mensalidadeNoite);
@@ -97,8 +106,8 @@ const Page: React.FC = () => {
         setMensalidadeTardeDesconto(data.mensalidadeTardeDesconto);
         setMensalidadeNoiteDesconto(data.mensalidadeNoiteDesconto);
         setMensalidadeOnlineDesconto(data.mensalidadeOnlineDesconto);
-      }else{
-        setMensalidadeInv(data.mensalidade)
+      } else {
+        setMensalidadeInv(data.mensalidade);
       }
       
     } catch (error) {
@@ -130,8 +139,10 @@ const Page: React.FC = () => {
         setDesconto={setDesconto}
         setStateOfCalc={setStateOfCalc}
         stateOfCalc={stateOfCalc}
-        setDate={setData} 
-        turno={''}      />
+        setDate={setData}
+        turno={turno}
+        setTurno={setTurno}
+      />
       <section className="mt-10 w-11/12 items-center flex">
         <button className="m-auto w-10/12 md:w-4/12 py-3 text-white bg-[#3B82F6] rounded-lg" onClick={handleEnv} disabled={loading}>
           {loading ? "Aguarde..." : "Calcular"}
@@ -139,14 +150,13 @@ const Page: React.FC = () => {
       </section>
       {error && <div className="mt-4 text-red-500">{error}</div>}
       <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-200 rounded-xl p-4 mt-72 lg:mt-48'>
-
         <CalcResult 
           aluno={aluno}
           curso={nome}
           mensalidade={mensalidadeInv}
           parcelamento={parcelamento}
           unidade={unidade}
-          dataLimite={data ? data : new Date}
+          dataLimite={data ? data : new Date()}
           desconto={desconto}
           turnoManha={mensalidadeManha ? "Manhã" : ""}
           turnoTarde={mensalidadeTarde ? "Tarde" : ""}
@@ -164,7 +174,6 @@ const Page: React.FC = () => {
           state={stateOfCalc}
         />
       </div>
-      
     </div>
   );
 };

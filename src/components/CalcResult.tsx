@@ -60,7 +60,7 @@ const CalcResult: React.FC<CalcResultProps> = ({
     if (mensalidadeNoite) content += `🌙 ${turnoNoite} : ${parcelamento}x de R$ ${mensalidadeNoite}\n`;
     if (mensalidadeOnline) content += `💻 ${turnoOnline} : ${parcelamento}x de R$ ${mensalidadeOnline}\n`;
   
-    if (desconto > 0) {
+    if (desconto > 0 && mensalidadeManha !== mensalidadeManhaDesconto || mensalidadeTarde !== mensalidadeTardeDesconto || mensalidadeNoite !== mensalidadeNoiteDesconto || mensalidadeOnline !== mensalidadeOnlineDesconto) {
       content += `\n🎉 Valores com desconto para: ${aluno}\n`;
       if (turnoManha) content += `🌅 ${turnoManha} : ${parcelamento}x de R$ ${mensalidadeManhaDesconto}\n`;
       if (turnoTarde) content += `☀️ ${turnoTarde} : ${parcelamento}x de R$ ${mensalidadeTardeDesconto}\n`;
