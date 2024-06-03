@@ -1,17 +1,16 @@
-"use client"
 import React, { useEffect, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 interface PDFViewerProps {
-  pdfUrl: string;
+  pdfUrl: any;
 }
 
 const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
   const [pageWidth, setPageWidth] = useState(0);
   const [numPages, setNumPages] = useState(0);
-
+  
   useEffect(() => {
     const calculatePageWidth = () => {
       const tela = window.innerWidth;
@@ -19,8 +18,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
         const desconto = tela * 0.2;
         return tela - desconto;
       }else{
-      const desconto = 0 ;
-      return tela;
+        return tela;
       }
     };
 
@@ -41,7 +39,8 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
   useEffect(() => {
     const loadPDF = async () => {
       try {
-        const loadingTask = pdfjs.getDocument(pdfUrl);
+        const pdfData = await fetch(pdfUrl).then((res) => res.blob());
+        const loadingTask = pdfjs.getDocument(URL.createObjectURL(pdfData));
         const pdf = await loadingTask.promise;
         const totalPages = pdf.numPages;
         setNumPages(totalPages);
