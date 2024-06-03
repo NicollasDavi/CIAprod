@@ -6,8 +6,6 @@ import 'slick-carousel/slick/slick-theme.css';
 
 type CarouselItem = {
   image: string;
-  alt: string;
-  caption: string;
 };
 
 type CarouselProps = {
@@ -16,14 +14,22 @@ type CarouselProps = {
 
 const Carousel: React.FC<CarouselProps> = ({ items }) => {
   const sliderRef = useRef<Slider>(null);
-  const [number, setNumber] = useState(2)
+  const [slidesToShow, setSlidesToShow] = useState(window.innerWidth < 600 ? 1 : 2);
+
+  const updateSlidesToShow = () => {
+    if (window.innerWidth < 600) {
+      setSlidesToShow(1);
+    } else {
+      setSlidesToShow(2);
+    }
+  };
 
   useEffect(() => {
-    if(window.innerWidth < 600){
-      setNumber(1)
-    }
-  })
-  
+    window.addEventListener('resize', updateSlidesToShow);
+    return () => {
+      window.removeEventListener('resize', updateSlidesToShow);
+    };
+  }, []);
 
   useEffect(() => {
     if (sliderRef.current) {
@@ -35,10 +41,10 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: number,
+    slidesToShow,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000, 
+    autoplaySpeed: 3000,
     arrows: true,
   };
 
@@ -46,8 +52,8 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
     <div>
       <Slider ref={sliderRef} {...settings}>
         {items.map((item, index) => (
-          <div key={index}>
-            <img src={item.image} alt={item.alt} />
+          <div key={index} className="max-h-[50vh]">
+            <img src={item.image} alt={`Carousel item ${index + 1}`} className="max-h-[50vh] object-cover w-full" />
           </div>
         ))}
       </Slider>

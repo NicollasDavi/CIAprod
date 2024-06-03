@@ -12,28 +12,19 @@ interface PdfFile {
   createdAt: Date;
 }
 
-interface img {
+interface CarouselItem {
   id: string;
   image: string;
   createdAt: Date;
 }
 
+
+
 const Page = () => {
-  const items = [
-    {
-      image: '/t.jpg',
-      alt: 'Texto alternativo da imagem',
-      caption: 'Legenda da imagem 1',
-    },
-    {
-      image: '/t.jpg',
-      alt: 'Texto alternativo da imagem',
-      caption: 'Legenda da imagem 2',
-    },
-  ];
+
 
   const [carouselFile, setCarouselFile] = useState<File | null>(null);
-  const [carouselImgs, setCarouselImgs] = useState<img[]> ([])
+  const [carouselImgs, setCarouselImgs] = useState<CarouselItem[]>([]);
 
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [actualyPdf, setActualyPdf] = useState<string | null>(null);
@@ -50,17 +41,23 @@ const Page = () => {
       }
     };
 
-    const fetchcarouselimgs = async () => {
-      try {
-        const response = await axiosInstance.get("/carousel")
-        setCarouselImgs(response.data)
-      } catch (error) {
-        console.error("Erro ao buscar imagens do carousel:", error)
-      }
-    }
-
     fetchPdf();
   }, [pdfUpdated]);
+
+  useEffect(() => {
+    axiosInstance.get('/carousel')
+      .then(response => {
+        setCarouselImgs(response.data);
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+      });
+  }, []);
+  
+
+  useEffect(() => {
+    console.log(carouselImgs)
+  }, [carouselImgs])
 
   const handleCarouselFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -108,12 +105,7 @@ const Page = () => {
     if (pdfFile) {
       try {
         const base64String = await convertFileToBase64(pdfFile);
-        const data: PdfFile = {
-          id: 'pdf',
-          url: base64String,
-          createdAt: new Date()
-        };
-        await axiosInstance.put("/pdf", { ...data });
+        await axiosInstance.put("/pdf", base64String);
         setPdfUpdated(!pdfUpdated); 
         console.log('Base64 string do PDF:', base64String);
       } catch (error) {
@@ -125,6 +117,7 @@ const Page = () => {
   const handleDisable = async () => {
     // Implementação da lógica de desativação
   };
+
   return (
     <div className="pt-8">
       <div className="w-11/12 md:w-9/12 m-auto h-auto mb-3">
@@ -135,7 +128,7 @@ const Page = () => {
           <h1 className="text-2xl font-bold">Carrusel Atual</h1>
           <div className="flex flex-row">
             <section className="w-6/12 p-2">
-              <Carousel items={items} />
+              <Carousel items={carouselImgs}/>
             </section>
             <section className="w-6/12 flex flex-col p-2">
               {carouselFile 
@@ -163,6 +156,7 @@ const Page = () => {
             </section>
           </div>
         </div>
+
         <div className="w-full p-4 shadow mt-4">
           <h1 className="text-2xl font-bold">PDF Atual</h1>
           <div className="flex flex-row">
