@@ -28,7 +28,7 @@ export default function RootLayout({
           <Header />
           <AsideBar />
           <MobileAsideBar />
-          <div>{children}</div>
+          <div className="pt-5">{children}</div>
         </RenderProvider>
       </body>
     </html>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import CalcResult from '@/src/components/CalcResult';
 import CourseSelectionForm from '@/src/components/CourseSelectionForm';
 import axiosInstance from '../../../app/axiosInstance';
+import { RiH1 } from 'react-icons/ri';
 
 interface Curso {
   id: string;
@@ -55,7 +56,7 @@ const Page: React.FC = () => {
         console.error('Erro ao buscar cursos:', error);
       }
     };
-  
+
     const fetchUnidades = async () => {
       try {
         const response = await axiosInstance.get('/unidades');
@@ -94,6 +95,10 @@ const Page: React.FC = () => {
         parcelamento: Number(parcelamento),
         desconto: desconto
       };
+
+      if(desconto < 0 || desconto > 100 || parcelamento < 1){
+        return setError("Valores invalidos")
+      }
 
       const response = await axiosInstance.post(reqUrl, curso);
       const data = response.data;
@@ -143,13 +148,12 @@ const Page: React.FC = () => {
         turno={turno}
         setTurno={setTurno}
       />
-      <section className="mt-10 w-11/12 items-center flex">
-        <button className="m-auto w-10/12 md:w-4/12 py-3 text-white bg-[#3B82F6] rounded-lg" onClick={handleEnv} disabled={loading}>
+      <section className="mt-10 items-center flex flex-col">
+      {error && <><h1 className='text-red-500 text-xl mb-5 mt-5'>{error}</h1></>}
+        <button className="m-auto w-10/12 md:w-4/12 py-3 text-white bg-[#3B82F6] rounded-lg mb-20" onClick={handleEnv} disabled={loading}>
           {loading ? "Aguarde..." : "Calcular"}
         </button>
-      </section>
-      {error && <div className="mt-4 text-red-500">{error}</div>}
-      <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-200 rounded-xl p-4 mt-72 lg:mt-48'>
+        <div className='bg-blue-200 rounded-xl p-4'>
         <CalcResult 
           aluno={aluno}
           curso={nome}
@@ -174,6 +178,8 @@ const Page: React.FC = () => {
           state={stateOfCalc}
         />
       </div>
+      </section>
+      
     </div>
   );
 };

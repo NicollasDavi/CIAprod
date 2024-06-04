@@ -76,9 +76,12 @@ const AsideBar = () => {
           </Link> : ""}
         </section>
         <section className='w-6/12 m-auto mt-8'>
+          
+          {admin ? 
           <Link href={"/pages/comunicacao"} className='text-4xl text-center text-white'>
-            <PiNewspaperFill  className='m-auto'/>
-          </Link>
+          <PiNewspaperFill  className='m-auto'/>
+        </Link>
+          : ""}
         </section>
         <div className='w-full'>
             <section className='fixed bottom-5 left-0 right-0  text-white text-center p-4 w-1/12'>

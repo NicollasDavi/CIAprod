@@ -20,9 +20,8 @@ interface CarouselItem {
 
 
 
+
 const Page = () => {
-
-
   const [carouselFile, setCarouselFile] = useState<File | null>(null);
   const [carouselImgs, setCarouselImgs] = useState<CarouselItem[]>([]);
 
@@ -31,6 +30,9 @@ const Page = () => {
   const [pdfUpdated, setPdfUpdated] = useState<boolean>(false);
   const [carouselUpdated, setCarouselUpdated] = useState<boolean>(false);
 
+  
+
+  
   useEffect(() => {
     const fetchPdf = async () => {
       try {
@@ -121,11 +123,11 @@ const Page = () => {
   return (
     <div className="pt-8">
       <div className="w-11/12 md:w-9/12 m-auto h-auto mb-3">
-        <h1 className="ml-1 pb-2 pt-10 md:pt-12 text-3xl font-bold">Comunicação</h1>
+        <h1 className="ml-1 pb-2 pt-10 md:pt-12 ">Comunicação</h1>
       </div>
       <div className="w-11/12 m-auto h-auto mb-10 md:pl-28">
         <div className="w-full p-4 shadow">
-          <h1 className="text-2xl font-bold">Carrusel Atual</h1>
+          <h1 className="text-2xl font-bold">Carousel Atual</h1>
           <div className="flex flex-row">
             <section className="w-6/12 p-2">
               <Carousel items={carouselImgs}/>
