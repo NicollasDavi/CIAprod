@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from 'react';
 import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -50,13 +50,19 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
 
   return (
     <div>
-      <Slider ref={sliderRef} {...settings}>
-        {items.map((item, index) => (
-          <div key={index} className="max-h-[50vh]">
-            <img src={item.image} alt={`Carousel item ${index + 1}`} className="max-h-[50vh] object-cover w-full" />
-          </div>
-        ))}
-      </Slider>
+      {items.length === 1 ? (
+        <div key='1' className="max-h-[30vh]">
+          <img src={items[0].image} alt={`Carousel item`} className="max-h-[30vh] object-contain w-full" />
+        </div>
+      ) : (
+        <Slider ref={sliderRef} {...settings}>
+          {items.map((item, index) => (
+            <div key={index} className="max-h-[30vh]">
+              <img src={item.image} alt={`Carousel item ${index + 1}`} className="max-h-[30vh] object-contain w-full" />
+            </div>
+          ))}
+        </Slider>
+      )}
     </div>
   );
 };

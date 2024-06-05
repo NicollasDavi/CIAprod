@@ -1,9 +1,11 @@
+// Page.tsx
 "use client"
 import React, { useState, useEffect } from 'react';
 import ListBar from '@/src/components/adm/ListBar';
 import axiosInstance from '../../axiosInstance';
 import { useRenderContext } from '../../../app/context/renderContext';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface Unidade {
   codigo: string;
@@ -31,13 +33,13 @@ interface Valores {
   active: boolean;
 }
 
-
 const Page = () => {
   const { admin } = useRenderContext();
   const [unidades, setUnidades] = useState<Unidade[]>([]);
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [valores, setValores] = useState<Valores[]>([]);
-  const router = useRouter()
+  const router = useRouter();
+
   useEffect(() => {
     axiosInstance.get('/all/unidades')
       .then(response => {
@@ -69,7 +71,7 @@ const Page = () => {
   }, []);
 
   const handleUnidadeDelete = (codigo: string) => {
-    setUnidades(unidades.filter(unidade => unidade.codigo !== codigo));
+    setUnidades(prevUnidades => prevUnidades.filter(unidade => unidade.codigo !== codigo));
   };
 
   const handleUnidadeStatusChange = (codigo: string, newStatus: boolean) => {
@@ -79,7 +81,7 @@ const Page = () => {
   };
 
   const handleCursoDelete = (id: string) => {
-    setCursos(cursos.filter(curso => curso.id !== id));
+    setCursos(prevCursos => prevCursos.filter(curso => curso.id !== id));
   };
 
   const handleCursoStatusChange = (id: string, newStatus: boolean) => {
@@ -89,7 +91,7 @@ const Page = () => {
   };
 
   const handleValorDelete = (id: string) => {
-    setValores(valores.filter(valor => valor.id !== id));
+    setValores(prevValores => prevValores.filter(valor => valor.id !== id));
   };
 
   const handleValorStatusChange = (id: string, newStatus: boolean) => {
@@ -105,7 +107,16 @@ const Page = () => {
           <h1 className='ml-1 pb-2 pt-10 md:pt-12'>Data List</h1>
           <div className='w-10/12'>
             <div className='pt-10'>
-              <h2>Unidade</h2>
+              <section className='flex flex-row mb-3 items-center'>
+              <h2 className='mt-1'>Unidade</h2>
+              <Link 
+                className=" text-blue1 text-xl font-bold rounded-full ml-5 flex items-center justify-center text-center cursor-pointer"
+                title="Add" 
+                href="/pages/infos/add/unidade"
+              >
+                +
+              </Link>
+              </section>
               <section>
                 <hr />
                 {unidades.map(unidade => (
@@ -115,7 +126,7 @@ const Page = () => {
                     date={unidade.createdAt}
                     data1={unidade.vcep}
                     data2=""
-                    criadoPor="Nicollas"
+                    criadoPor="Caramelo"
                     route={`unidade/${unidade.codigo}`}
                     active={unidade.active}
                     routeDisable={`unidade/${unidade.codigo}`}
@@ -126,7 +137,16 @@ const Page = () => {
               </section>
             </div>
             <div className='pt-10'>
-              <h2>Cursos</h2>
+            <section className='flex flex-row mb-3 items-center'>
+              <h2 className='mt-1'>Cursos</h2>
+              <Link 
+                className=" text-blue1 text-xl font-bold rounded-full ml-5 flex items-center justify-center text-center cursor-pointer"
+                title="Add" 
+                href="/pages/cursocreate"
+              >
+                +
+              </Link>
+              </section>
               <section>
                 <hr />
                 {cursos.map(curso => (
@@ -147,7 +167,16 @@ const Page = () => {
               </section>
             </div>
             <div className='pt-10'>
-              <h2>Valores</h2>
+            <section className='flex flex-row mb-3 items-center'>
+              <h2 className='mt-1'>Valores</h2>
+              <Link 
+                className=" text-blue1 text-xl font-bold rounded-full ml-5 flex items-center justify-center text-center cursor-pointer"
+                title="Add" 
+                href="/pages/calculadora/add"
+              >
+                +
+              </Link>
+              </section>
               <section>
                 <hr />
                 {valores.map(valor => (
@@ -167,12 +196,6 @@ const Page = () => {
                 ))}
               </section>
             </div>
-          </div>
-          <div className='w-2/12 p-3 absolute bottom-0 right-0 flex flex-col'>
-            <button onClick={() => router.push('/pages/infos/add/unidade')} className='bg-blue1 p-2 mb-4 rounded-xl text-white'>Adicionar Unidade</button>
-            <button onClick={() => router.push('/pages/cursocreate')} className='bg-blue1 p-2 mb-4 rounded-xl text-white'>Adicionar Curso</button>
-            <button onClick={() => router.push('/pages/calculadora/add')} className='bg-blue1 p-2 mb-4 rounded-xl text-white'>Adicionar Valor</button>
-            <button onClick={() => router.push('/pages/professores/add')} className='bg-blue1 p-2 mb-4 rounded-xl text-white'>Adicionar Unidade</button>
           </div>
         </div>
       )}

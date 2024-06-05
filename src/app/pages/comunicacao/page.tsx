@@ -10,6 +10,7 @@ interface PdfFile {
   id: string;
   url: string;
   createdAt: Date;
+  active: boolean
 }
 
 interface CarouselItem {
@@ -24,19 +25,22 @@ interface CarouselItem {
 const Page = () => {
   const [carouselFile, setCarouselFile] = useState<File | null>(null);
   const [carouselImgs, setCarouselImgs] = useState<CarouselItem[]>([]);
+  const [pdfState, setPdfState] = useState("")
 
   const [pdfFile, setPdfFile] = useState<File | null>(null);
-  const [actualyPdf, setActualyPdf] = useState<string | null>(null);
+  const [actualyPdf, setActualyPdf] = useState<PdfFile | null>(null);
   const [pdfUpdated, setPdfUpdated] = useState<boolean>(false);
   const [carouselUpdated, setCarouselUpdated] = useState<boolean>(false);
 
   
-
+const handleRedirect = () => {
+  window.location.replace('/pages/comunicacao/images');
+}
   
   useEffect(() => {
     const fetchPdf = async () => {
       try {
-        const response = await axiosInstance.get("/pdf");
+        const response = await axiosInstance.get("/pdf/adm");
         setActualyPdf(response.data);
       } catch (error) {
         console.error("Erro ao buscar PDF:", error);
@@ -95,6 +99,7 @@ const Page = () => {
       try {
         const base64String = await convertFileToBase64(carouselFile);
         await axiosInstance.post("/carousel", base64String);
+        setCarouselFile(null)
         setCarouselUpdated(!carouselUpdated);
         console.log('Base64 string do carrusel:', base64String);
       } catch (error) {
@@ -117,7 +122,10 @@ const Page = () => {
   };
 
   const handleDisable = async () => {
-    // Implementação da lógica de desativação
+    try {
+      await axiosInstance.patch("/pdf");
+    } catch (error) {
+    }
   };
 
   return (
@@ -149,12 +157,27 @@ const Page = () => {
                     />
                   </>
               }
+              {carouselFile
+              ?
+            <>
               <button
                 className="w-3/12 text-white m-auto shadow bg-blue1 rounded-xl px-2 py-1 mt-10"
                 onClick={handleConvertCarouselToBase64}
               >
+                Enviar
+              </button>
+            </>
+            :
+            <>
+              <button
+                className="w-3/12 text-white m-auto shadow bg-blue1 rounded-xl px-2 py-1 mt-10"
+                onClick={handleRedirect}
+              >
                 Editar
               </button>
+            </>  
+          }
+              
             </section>
           </div>
         </div>
@@ -163,7 +186,7 @@ const Page = () => {
           <h1 className="text-2xl font-bold">PDF Atual</h1>
           <div className="flex flex-row">
             <section className="m-auto shadow-lg p-2">
-              {actualyPdf && <PDF pdfUrl={actualyPdf} />}
+              {actualyPdf && <PDF pdfUrl={actualyPdf.url} />}
             </section>
             <section className="w-6/12 flex flex-col p-2">
               {pdfFile 
@@ -195,7 +218,7 @@ const Page = () => {
                     className="w-3/12 text-white m-auto shadow bg-blue1 rounded-xl px-2 py-1 mt-5"
                     onClick={handleDisable}
                   >
-                    Desativar
+                    {actualyPdf?.active === true? <p>Desativar</p> : <p>Ativar</p>}
                   </button>
               }
             </section>

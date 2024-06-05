@@ -18,7 +18,7 @@ const Page = () => {
   const [carouselImgs, setCarouselImgs] = useState<CarouselItem[]>([]);
 
   useEffect(() => {
-    axiosInstance.get('/carousel')
+    axiosInstance.get('/carousel/p')
       .then(response => {
         setCarouselImgs(response.data);
       })
