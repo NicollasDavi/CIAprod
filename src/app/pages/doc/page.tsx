@@ -18,6 +18,7 @@ interface DocType {
 }
 
 const Page = () => {
+    const router = useRouter()
     const { matricula, ...otherProps } = useRenderContext();
     const [image, setImage] = useState<File | Blob | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,8 +44,6 @@ const Page = () => {
             ...prevDoc,
             publica: !publica,
         }));
-        console.log(publica)
-
     };
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -119,10 +118,14 @@ const Page = () => {
         }));
     }, [nome]);
 
+const cancelar = () => {
+    router.push("/pages/docs");
+}
+
     const env = () => {
         axiosInstance.post('/doc', doc)
             .then(response => {
-                console.log(response);
+                router.push(`/pages/usedoc/${response.data.pagina.id}`)
             })
             .catch(error => {
                 console.error('Erro:', error);
@@ -210,11 +213,27 @@ const Page = () => {
     return (
         <div className='pt-8'>
             <div className='w-10/12 md:w-9/12 m-auto h-auto mb-10'>
-                <section className='mt-16 items-end'>
-                    <input type="text" value={nome} className='ml-1 border mb-3' onChange={(e) => setNome(e.target.value)} />
-                    <hr className='mt-2'/>
+            <section className='mt-16 flex items-center'>
+                <input 
+                    type="text" 
+                    value={nome} 
+                    className='border mb-3 text-lg p-2 rounded-md w-4/12'
+                    onChange={(e) => setNome(e.target.value)} 
+                    placeholder="Digite o nome"
+                />
+                <section className='flex items-center justify-center ml-4'>
+                    <input 
+                    type="checkbox" 
+                    onChange={() => handleSetPublica()} 
+                    id="publica-checkbox"
+                    className='form-checkbox h-5 w-5 text-blue-600'
+                    />
+                    <label htmlFor="publica-checkbox" className='ml-2'>
+                    Publica
+                    </label>
                 </section>
-            
+                </section>
+                <hr className='mt-2'/>
                 {doc.types.map((item, index) => (
                     <div key={index} className='p-2 flex flex-row gap-2 '>
                          <button className=' px-3 py-1 rounded-full w-[30px] text-center h-[30px] text-white bg-red-500' onClick={() => removeItem(index)}>R</button>
@@ -359,16 +378,14 @@ const Page = () => {
                     >
                         Salvar
                     </button>
-                    <section className='h-full flex items-center justify-center ml-3 mt-10'>
-                        <input 
-                            type="checkbox" 
-                            onChange={() => handleSetPublica()} 
-                            id="publica-checkbox"
-                        />
-                        <label htmlFor="publica-checkbox" className='ml-3'>
-                            Publica
-                        </label>
-                    </section>
+                    <button 
+                        className='px-10 py-1 text-white rounded-3xl bg-red-500 ml-3 mt-10' 
+                        onClick={() => cancelar()}
+                    >
+                        Cancelar
+                    </button>
+                   
+                   
                 </section>
 
             </div>

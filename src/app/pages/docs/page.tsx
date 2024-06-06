@@ -41,7 +41,9 @@ const Page = () => {
         <DocCard key={doc.id} nome={doc.nome} id={doc.id}/>
       ))}
       </div>
-      <PlusIcon link={teste} />
+      <section className=' fixed md:bottom-10 md:right-10 bottom-5 right-5'>
+        <PlusIcon link={teste} />
+      </section>
     </div>
   );
 };

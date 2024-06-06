@@ -90,10 +90,10 @@ const ListBar: React.FC<ListBarProps> = ({
 
   return (
     <>
-      <div className="justify-around p-2 rounded-md shadow flex flex-row mt-3">
+      <div className="justify-around mr-5 md:mr-0 p-2 rounded-md shadow flex flex-row mt-3">
         <div className='flex flex-row w-10/12 justify-around'>
           <h1>{nome}</h1>
-          <h1>{data1}</h1>
+          <h1 className='hidden md:block'>{data1}</h1>
           <h1>{data2}</h1>
           <h1 className='hidden md:block'>Criado por: {criadoPor}</h1>
           <h1 className='hidden md:block'>Criado em: {formatDate(new Date(date))}</h1>

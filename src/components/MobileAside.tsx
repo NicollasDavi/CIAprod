@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { TiHome } from "react-icons/ti";
-import { MdAttachMoney } from "react-icons/md";
+import { MdAttachMoney, MdCalculate } from "react-icons/md";
 import { FaInfo } from "react-icons/fa";
 import { SiGoogledocs } from "react-icons/si";
 import { FaCalendarAlt } from "react-icons/fa";
@@ -11,6 +11,7 @@ import { CiLogout } from "react-icons/ci";
 import axiosInstance from '../app/axiosInstance';
 import { BiSolidData } from 'react-icons/bi';
 import { useRenderContext } from '../app/context/renderContext';
+import { PiNewspaperFill } from 'react-icons/pi';
 
 const MobileAsideBar = () => {
   const handleLogOut = () => {
@@ -39,7 +40,7 @@ const MobileAsideBar = () => {
         </Link>
         <hr className='mt-3'/>
       </section>
-      <section className='w-6/12 m-auto mt-20'>
+      <section className='w-6/12 m-auto mt-10'>
         <Link href={"/pages/home"} className='text-4xl text-center text-white'>
           <TiHome className='m-auto'/>
         </Link>
@@ -60,10 +61,21 @@ const MobileAsideBar = () => {
         </Link>
       </section>
       <section className='w-6/12 m-auto mt-8'>
+          {admin ? <Link href={"/pages/calculadora"} className='text-4xl text-center text-white'>
+          <MdCalculate className='m-auto'/>
+          </Link> : ""}
+        </section>
+      <section className='w-6/12 m-auto mt-8'>
           {admin ? <Link href={"/pages/datalist"} className='text-4xl text-center text-white'>
             <BiSolidData className='m-auto'/>
           </Link> : ""}
         </section>
+        <section className='w-6/12 m-auto mt-8'>
+          {admin ? <Link href={"/pages/comunicacao"} className='text-4xl text-center text-white'>
+            <PiNewspaperFill  className='m-auto'/>
+          </Link> : ""}
+        </section>
+
       {/* <section className='w-6/12 m-auto mt-8'>
         <Link href={"/pages/calendario"} className='text-4xl text-center text-white'>
           <FaCalendarAlt className='m-auto'/>

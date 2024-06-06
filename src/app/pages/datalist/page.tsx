@@ -38,8 +38,7 @@ const Page = () => {
   const [unidades, setUnidades] = useState<Unidade[]>([]);
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [valores, setValores] = useState<Valores[]>([]);
-  const router = useRouter();
-
+  
   useEffect(() => {
     axiosInstance.get('/all/unidades')
       .then(response => {

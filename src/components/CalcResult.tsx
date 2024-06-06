@@ -97,7 +97,7 @@ const CalcResult: React.FC<CalcResultProps> = ({
         </div>
       )}
       <button
-        className='bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 flex items-center'
+        className='bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 flex items-center m-auto'
         onClick={handleCopyAll}
       >
         <FaCopy className='mr-2' />

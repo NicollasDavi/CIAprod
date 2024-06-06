@@ -2,13 +2,20 @@
 import { useRouter } from 'next/navigation';
 import axiosInstance from '../../../../app/axiosInstance';
 import React, { useEffect, useState } from 'react';
-import { BiSolidEdit } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
+import { useRenderContext } from '../../../context/renderContext';
+import ConfirmationModal from "../../../../components/ConfirmationModal"
+
 
 const Page = () => {
+  const { matricula, ...otherProps } = useRenderContext();
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+
   const router = useRouter();
+  const [paginaUserId, setPaginaUserId] = useState("")
   const id = window.location.pathname.split('/').pop();
-const [doc, setDoc] = useState<any[]>([]);
+
+  const [doc, setDoc] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,20 +23,20 @@ const [doc, setDoc] = useState<any[]>([]);
       try {
         if (id) {
           const response = await axiosInstance.get(`/doc/${id}`);
-          console.log('Dados recebidos da API:', response.data.docTypes);
           setDoc(response.data.docTypes);
+          setPaginaUserId(response.data.userId)
           setLoading(false);
         }
       } catch (error) {
-        console.error('Erro ao obter dados da API:', error);
         setLoading(false);
       }
     };
     fetchData();
   }, [id]);
 
-  const handleDelete = (id: string) => {
-    axiosInstance.patch(`/doc/${id}`)
+  const handleDelete = (id: any) => {
+    setIsConfirmationModalOpen(false);
+    axiosInstance.patch(`/doc/${id}/0`)
       .then(() => {
         router.push("/pages/docs");
       })
@@ -60,12 +67,7 @@ const [doc, setDoc] = useState<any[]>([]);
         <section className='mt-16 items-end mb-16 text-2xl'>
           <h1>Nome</h1>
         </section>
-        <button
-          className="p-1 rounded-lg bg-blue-500 ml-10 text-white mr-3 text-lg"
-          onClick={() => handleDelete(id as string)}
-        >
-          <MdDeleteForever />
-        </button>
+        
         {loading ? (
           <div>Carregando...</div>
         ) : (
@@ -106,7 +108,27 @@ const [doc, setDoc] = useState<any[]>([]);
           ))
         )}
         <hr />
+        {paginaUserId == matricula &&
+        <section className='shadow mt-5 p-3 felx felx-row items-center rounded-xl'>
+          <section>
+            <button
+            className="p-1 rounded-lg bg-red-500 ml-10 text-white mr-3 text-lg flex flex-row gap-5 items-center justify-around"
+            onClick={() => setIsConfirmationModalOpen(true)}
+          >
+            <MdDeleteForever /> Deletar pagina
+          </button>
+            </section>
+        </section>
+        }
       </div>
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        onConfirm={() => {
+          handleDelete(id)
+        }}
+      />
+      
     </div>
   );
 };
