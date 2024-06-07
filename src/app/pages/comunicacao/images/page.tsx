@@ -12,20 +12,22 @@ interface CarouselItem {
 const Page = () => {
     const [carouselImgs, setCarouselImgs] = useState<CarouselItem[]>([]);
 
+    const fetch = () =>  axiosInstance.get('/carousel')
+    .then(response => {
+      setCarouselImgs(response.data);
+    })
+    .catch(error => {
+      console.error('Erro:', error);
+    });
+
     useEffect(() => {
-        axiosInstance.get('/carousel')
-          .then(response => {
-            setCarouselImgs(response.data);
-          })
-          .catch(error => {
-            console.error('Erro:', error);
-          });
+      fetch()
     }, []);
 
     const handleDelete = (id: string) => {
         axiosInstance.delete(`/carousel/${id}`)
         .then(response => {
-          console.log(response)
+          fetch()
         })
         .catch(error => {
           console.error('Erro:', error);

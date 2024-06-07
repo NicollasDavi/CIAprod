@@ -11,7 +11,8 @@ interface CalcResultProps {
   turno: string;
   parcelamento: number;
   mensalidade: any;
-  state: boolean
+  state: boolean;
+  adicional: string
   dataLimite: Date;
   aluno: string;
   desconto: number;
@@ -50,11 +51,15 @@ const CalcResult: React.FC<CalcResultProps> = ({
   mensalidadeNoiteDesconto,
   mensalidadeOnlineDesconto,
   dataLimite,
-  state
+  state,
+  adicional
 }) => {
   const handleCopyAll: any = () => {
     let content = `📚 ${curso} || 🏫 ${unidade} em ${parcelamento}x\n`;
     content += `Valores de: Escola 🏫+ Material 📖\n`;
+    if (adicional !== "") {
+      content += `Adicional: ${adicional}\n`;
+    }
     if (mensalidadeManha) content += `🌅 ${turnoManha} : ${parcelamento}x de R$ ${mensalidadeManha}\n`;
     if (mensalidadeTarde) content += `☀️ ${turnoTarde} : ${parcelamento}x de R$ ${mensalidadeTarde}\n`;
     if (mensalidadeNoite) content += `🌙 ${turnoNoite} : ${parcelamento}x de R$ ${mensalidadeNoite}\n`;
@@ -79,7 +84,13 @@ const CalcResult: React.FC<CalcResultProps> = ({
       ?
       <>
         <h1 className='text-xl font-extrabold'>{`📚 ${curso} || 🏫 ${unidade} em ${parcelamento}x`}</h1>
-      <h1>{`Valores de: Escola 🏫+ Material 📖\n`}</h1>
+        {adicional == "" 
+        ?
+        <h1>{`Valores de: Escola 🏫+ Material 📖\n`}</h1> 
+        :
+        <h1>{`Valores de: Escola 🏫+ Material + ${adicional}📖\n`}</h1> 
+        }
+      
         {mensalidadeManha && <h2>{`🌅 ${turnoManha} : ${parcelamento}x de R$ ${mensalidadeManha}`}</h2>}
         {mensalidadeTarde && <h2>{`☀️ ${turnoTarde} : ${parcelamento}x de R$ ${mensalidadeTarde}`}</h2>}
         {mensalidadeNoite && <h2>{`🌙 ${turnoNoite} : ${parcelamento}x de R$ ${mensalidadeNoite}`}</h2>}

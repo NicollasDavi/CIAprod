@@ -1,4 +1,3 @@
-// Page.tsx
 "use client"
 import React, { useState, useEffect } from 'react';
 import ListBar from '@/src/components/adm/ListBar';
@@ -38,39 +37,51 @@ const Page = () => {
   const [unidades, setUnidades] = useState<Unidade[]>([]);
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [valores, setValores] = useState<Valores[]>([]);
-  
-  useEffect(() => {
-    axiosInstance.get('/all/unidades')
-      .then(response => {
-        setUnidades(response.data);
-      })
-      .catch(error => {
-        console.error('Erro ao buscar unidades:', error);
-      });
-  }, []);
+  const [updateComponent, setUpdateComponent] = useState(false); // Variável para forçar a atualização do componente
 
-  useEffect(() => {
-    axiosInstance.get('/all/cursos')
-      .then(response => {
-        setCursos(response.data);
-      })
-      .catch(error => {
-        console.error('Erro ao buscar cursos:', error);
-      });
-  }, []);
-
-  useEffect(() => {
-    axiosInstance.get('/all/valores')
+  const fetchValores = () => axiosInstance.get('/all/valores')
       .then(response => {
         setValores(response.data);
+        setUpdateComponent(prevState => !prevState);
       })
       .catch(error => {
         console.error('Erro ao buscar valores:', error);
       });
-  }, []);
+
+  const fecthUnidades = () => axiosInstance.get('/all/unidades')
+      .then(response => {
+        setUnidades(response.data);
+        setUpdateComponent(prevState => !prevState);
+      })
+      .catch(error => {
+        console.error('Erro ao buscar unidades:', error);
+      });
+
+  const fetchCursos = () => axiosInstance.get('/all/cursos')
+      .then(response => {
+        setCursos(response.data);
+        setUpdateComponent(prevState => !prevState); 
+      })
+      .catch(error => {
+        console.error('Erro ao buscar cursos:', error);
+      });
+
+  useEffect(() => {
+    fetchCursos();
+    fecthUnidades();
+    fetchValores();
+  }, [updateComponent]);
 
   const handleUnidadeDelete = (codigo: string) => {
-    setUnidades(prevUnidades => prevUnidades.filter(unidade => unidade.codigo !== codigo));
+    fecthUnidades();
+  };
+
+  const handleCursoDelete = (id: string) => {
+    fetchCursos();
+  };
+
+  const handleValorDelete = (id: string) => {
+    fetchValores()
   };
 
   const handleUnidadeStatusChange = (codigo: string, newStatus: boolean) => {
@@ -79,18 +90,10 @@ const Page = () => {
     ));
   };
 
-  const handleCursoDelete = (id: string) => {
-    setCursos(prevCursos => prevCursos.filter(curso => curso.id !== id));
-  };
-
   const handleCursoStatusChange = (id: string, newStatus: boolean) => {
     setCursos(cursos.map(curso => 
       curso.id === id ? { ...curso, active: newStatus } : curso
     ));
-  };
-
-  const handleValorDelete = (id: string) => {
-    setValores(prevValores => prevValores.filter(valor => valor.id !== id));
   };
 
   const handleValorStatusChange = (id: string, newStatus: boolean) => {

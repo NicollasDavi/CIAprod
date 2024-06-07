@@ -29,7 +29,10 @@ interface CourseSelectionFormProps {
   setNome: (state: string) => void;
   stateOfCalc: boolean;
   nome: string;
+  adicional: string;
+  setAdicional: (state : string) => void;
 }
+
 const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
   cursos,
   unidades,
@@ -48,7 +51,9 @@ const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
   stateOfCalc,
   nome,
   setDate,
-  setNome
+  setNome,
+  adicional,
+  setAdicional
 }) => {
   const handleCursoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = e.target.value;
@@ -132,9 +137,39 @@ const CourseSelectionForm: React.FC<CourseSelectionFormProps> = ({
           className="bg-gray-400/30 md:bg-white w-full py-2 md:py-3 px-8 rounded-lg border-blue-500 border-2" 
           onChange={(e) => setDesconto(Number(e.target.value))} 
         />
+      <section className="flex items-center space-x-4">
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      className="form-checkbox text-blue-500 h-5 w-5 accent-blue1 checked:border-transparent"
+      onChange={() => setAdicional("Integral")}
+      checked={adicional === "Integral"}
+    />
+    <span className="ml-2 text-gray-700">Integral</span>
+  </label>
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      className="form-checkbox text-blue-500 h-5 w-5 accent-blue1 checked:border-transparent"
+      onChange={() => setAdicional("Posiplay")}
+      checked={adicional === "Posiplay"}
+    />
+    <span className="ml-2 text-gray-700">Posiplay</span>
+  </label>
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      className="form-checkbox text-blue-500 h-5 w-5 accent-blue1 checked:border-transparent"
+      onChange={() => setAdicional("")}
+      checked={adicional === ""}
+    />
+    <span className="ml-2 text-gray-700">Nenhum</span>
+  </label>
+</section>
+
       </div>
     </div>
   );
 };
 
-export default CourseSelectionForm
+export default CourseSelectionForm;

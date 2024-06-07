@@ -9,8 +9,8 @@ const AvisosCheck = () => {
   const [type, setType] = useState("");
   const [avisos, setAvisos] = useState<any[]>([]);
 
-  useEffect(() => {
-    axiosInstance.get("/alerts").then(response => {
+
+    const fectAvisos = () => axiosInstance.get("/alerts").then(response => {
       const uniqueAlerts = response.data.filter((alert: any, index: number, self: any[]) => {
         return index === self.findIndex((a: any) => (
           a.id === alert.id
@@ -20,7 +20,9 @@ const AvisosCheck = () => {
     }).catch(error => {
       console.error("Erro ao obter os avisos:", error);
     });
-  }, []);
+    useEffect(() => {
+      fectAvisos()
+    }, [])
    
 
   const handleTypeChange = (value: string) => {
@@ -33,18 +35,18 @@ const AvisosCheck = () => {
     }
   };
 
-  const handleEnvAlert = () => {
-    console.log("Enviando alerta:");
-    console.log("Título:", title);
-    console.log("Texto:", text);
-    console.log("Tipo:", type);
+  const onFecth = () => {
+    fectAvisos()
+  }
+
+  const handleEnvAlert = async () => {
     const alert = {
       title,
       text,
       type
     };
-    axiosInstance.post("/alert", alert).then(response => {
-      console.log("Resposta do servidor:", response.data);
+    await axiosInstance.post("/alert", alert).then(response => {
+      onFecth()
     }).catch(error => {
       console.error("Erro ao enviar alerta:", error);
     });
@@ -57,7 +59,7 @@ const AvisosCheck = () => {
         <section className="w-full md:w-6/12 bg-gray-100 p-4 rounded-lg">
           {avisos.map((aviso, index) => (
             <section className='mb-2'>
-              <Notification key={index} type={aviso.type} title={aviso.title} text={aviso.text} adm={true} id={aviso.id}/>
+              <Notification key={index} type={aviso.type} title={aviso.title} text={aviso.text} adm={true} id={aviso.id} onFecth={onFecth}/>
             </section>
           ))}
         </section>

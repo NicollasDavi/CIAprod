@@ -14,9 +14,10 @@ interface NotificationProps {
     text: string;
     id: string
     adm: boolean
+    onFecth?: () => (void)
 }
 
-const Notification: React.FC<NotificationProps> = ({ type, title, text, adm, id }) => {
+const Notification: React.FC<NotificationProps> = ({ type, title, text, adm, id, onFecth }) => {
     const getBackgroundColor = (type: string) => {
         switch (type) {
             case 'D':
@@ -32,9 +33,11 @@ const Notification: React.FC<NotificationProps> = ({ type, title, text, adm, id 
         }
     };
 
-    const handleDelete = (id: string) => {
-        console.log(id)
-        axiosInstance.delete(`/alert/${id}`)
+    const handleDelete = async (id: string) => {
+        await axiosInstance.delete(`/alert/${id}`)
+        if(onFecth){
+            onFecth()
+        }
     }
 
     const getIcon = (type: string) => {

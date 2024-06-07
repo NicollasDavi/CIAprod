@@ -27,7 +27,7 @@ const Page: React.FC = () => {
   const [unidades, setUnidades] = useState<Unidade[]>([]);
   const [data, setData] = useState<Date>();
   const [turno, setTurno] = useState<string>("");
-
+  const [adicional, setAdicional] = useState("")
   const [mensalidadeInv, setMensalidadeInv] = useState<string>("");
 
   const [mensalidadeManha, setMensalidadeManha] = useState<string>("");
@@ -80,7 +80,8 @@ const Page: React.FC = () => {
     setMensalidadeTardeDesconto("");
     setMensalidadeNoiteDesconto("");
     setMensalidadeOnlineDesconto("");
-  }, [cursoId, unidade, aluno, parcelamento, desconto, turno]);
+
+  }, [cursoId, unidade, aluno, parcelamento, desconto, turno, adicional]);
 
   const handleEnv = async () => {
     setLoading(true);
@@ -93,7 +94,8 @@ const Page: React.FC = () => {
         nome,
         unidade,
         parcelamento: Number(parcelamento),
-        desconto: desconto
+        desconto: desconto,
+        adicional : adicional
       };
 
       if(desconto < 0 || desconto > 100 || parcelamento < 1){
@@ -129,6 +131,8 @@ const Page: React.FC = () => {
         <h1 className="ml-1 pb-2 pt-10 md:pt-12">Calcular Mensalidade</h1>
       </div>
       <CourseSelectionForm
+        adicional={adicional}
+        setAdicional={setAdicional}
         setNome={setNome}
         nome={nome}
         cursos={cursos}
@@ -155,6 +159,7 @@ const Page: React.FC = () => {
         </button>
         <div className='bg-blue-200 rounded-xl p-4'>
         <CalcResult 
+          adicional={adicional}
           aluno={aluno}
           curso={nome}
           mensalidade={mensalidadeInv}

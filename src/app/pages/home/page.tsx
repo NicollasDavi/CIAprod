@@ -2,10 +2,10 @@
 import PDFViewer from '@/src/components/pdf';
 import Carousel from '../../../components/Carousel';
 import MiniCalender from '../../../components/MiniCalender';
-import axiosInstance from '../../../app/axiosInstance';
+import axiosInstance from '../../axiosInstance';
 import { useEffect, useState } from 'react';
 import NotificationCarousel from '@/src/components/Notifications/NotificationCarousel';
-
+import Joyride, { STATUS } from "react-joyride"
 
 
 interface CarouselItem {
@@ -18,6 +18,30 @@ const Page = () => {
   const [pdf, setPdf] = useState(null);
   const [carouselImgs, setCarouselImgs] = useState<CarouselItem[]>([]);
   const [avisos, setAvisos] = useState([])
+
+  const [{run, steps}, setState] = useState({
+    run:true,
+    steps: [
+      {
+        content: <h2>Bora la rapais</h2>,
+        locale: { skip: <strong>SKIP</strong>},
+        placement: "center",
+        target: "body"
+      },
+      {
+        content: <h2>Esse é o primeiro</h2>,
+        placement: "bottom",
+        target: ".calender",
+        title: "Calendario"
+      }
+    ]
+  })
+
+    useEffect(() => {
+        axiosInstance.get("/alerts").then(response => {
+            setAvisos(response.data)
+        })
+    })
 
     useEffect(() => {
         axiosInstance.get("/alerts").then(response => {
@@ -62,7 +86,7 @@ const Page = () => {
       <div className='md:hidden flex justify-center pt-2 md:pt-24'>
         <MiniCalender />
       </div>
-      <div className='md:flex justify-center pt-10 hidden'>
+      <div className='md:flex justify-center pt-10 hidden calender'>
         <MiniCalender />
       </div>
       <div className='w-screen pt-10'>
