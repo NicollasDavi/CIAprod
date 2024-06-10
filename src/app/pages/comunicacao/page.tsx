@@ -101,9 +101,9 @@ const Page = () => {
       setLoading(true);
       setError(null);
       try {
-        const base64String = await convertFileToBase64(pdfFile).then(() => {
-          axiosInstance.put("/pdf", base64String);
-        })
+        const base64String = await convertFileToBase64(pdfFile);
+        console.log(base64String)
+        await axiosInstance.put("/pdf", base64String);
         fetchPdf();
         setPdfFile(null);
       } catch (error) {
@@ -114,6 +114,7 @@ const Page = () => {
       }
     }
   };
+  
 
   const handleDisable = async () => {
     setLoading(true);
@@ -133,6 +134,7 @@ const Page = () => {
     <div className="pt-8">
       <div className="w-11/12 md:w-9/12 m-auto h-auto mb-3">
         <h1 className="ml-1 pb-2 pt-10 md:pt-12">Comunicação</h1>
+        {error && <div className="mt-4 text-red-500">{error}</div>}
       </div>
       <div className="w-11/12 m-auto h-auto mb-10 md:pl-28">
         <div className="w-full p-4 shadow">
@@ -209,7 +211,6 @@ const Page = () => {
           </div>
         </div>
         <AvisosCheck />
-        {error && <div className="mt-4 text-red-500">{error}</div>}
       </div>
     </div>
   );

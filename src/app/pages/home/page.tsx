@@ -41,13 +41,8 @@ const Page = () => {
         axiosInstance.get("/alerts").then(response => {
             setAvisos(response.data)
         })
-    })
+    }, [])
 
-    useEffect(() => {
-        axiosInstance.get("/alerts").then(response => {
-            setAvisos(response.data)
-        })
-    })
 
 
   useEffect(() => {
@@ -92,6 +87,7 @@ const Page = () => {
       <div className='w-screen pt-10'>
         <PDFViewer pdfUrl={pdf}/>
       </div>
+    
     </div>
   );
 };

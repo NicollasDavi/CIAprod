@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import CalcResult from '@/src/components/CalcResult';
 import CourseSelectionForm from '@/src/components/CourseSelectionForm';
 import axiosInstance from '../../../app/axiosInstance';
-import { RiH1 } from 'react-icons/ri';
 
 interface Curso {
   id: string;
@@ -125,6 +124,26 @@ const Page: React.FC = () => {
     }
   };
 
+
+  const handleStartTutorial = () => {
+
+  };
+
+  const handleJoyrideStart = () => {};
+
+  const handleJoyrideFinish = () => {
+
+  };
+
+  const steps = [
+    {
+      target: '.dots',
+      content:
+        'Essa barra mostrara as principais notificações feitas pela equipe de comunicação',
+      disableBeacon: true,
+    },
+  ];
+
   return (
     <div className="pt-8">
       <div className="w-11/12 md:w-9/12 m-auto h-auto mb-10">
@@ -184,7 +203,6 @@ const Page: React.FC = () => {
         />
       </div>
       </section>
-      
     </div>
   );
 };
