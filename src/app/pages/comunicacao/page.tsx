@@ -32,7 +32,7 @@ const Page = () => {
   const fetchPdf = async () => {
     try {
       const response = await axiosInstance.get("/pdf/adm");
-      setActualyPdf(response.data);
+      setActualyPdf(response.data.pdfUrl);
     } catch (error) {
       console.error("Erro ao buscar PDF:", error);
       setError("Erro ao buscar PDF");
@@ -193,7 +193,7 @@ const Page = () => {
           <h1 className="text-2xl font-bold">PDF Atual</h1>
           <div className="flex flex-row">
             <section className="m-auto shadow-lg p-2">
-              {actualyPdf && <PDF pdfUrl={actualyPdf.url} />}
+              {actualyPdf && <PDF pdfUrl={actualyPdf} />}
             </section>
             <section className="w-6/12 flex flex-col p-2">
               {pdfFile 

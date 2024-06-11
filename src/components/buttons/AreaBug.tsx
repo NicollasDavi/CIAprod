@@ -27,7 +27,7 @@ const AreaBug: React.FC<AreaBugProps> = ({ onClose }) => {
   };
 
   return (
-    <div className='fixed bottom-20 right-16 w-2/12 shadow-blue1 shadow-lg rounded-lg'>
+    <div className='fixed bottom-20 right-16 w-2/12 shadow-blue1 shadow-lg rounded-lg bg-white'>
       <div className='p-2 rounded-lg border'>
         {showBugForm && (
           <form onSubmit={handleSubmit}>
