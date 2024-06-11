@@ -4,16 +4,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { TiHome } from "react-icons/ti";
-import { MdAttachMoney, MdCalculate } from "react-icons/md";
+import { MdCalculate } from "react-icons/md";
 import { FaInfo } from "react-icons/fa";
 import { SiGoogledocs } from "react-icons/si";
 import { CiLogout } from "react-icons/ci";
 import { BiSolidData } from "react-icons/bi";
 import { PiNewspaperFill } from "react-icons/pi";
-import Joyride from "react-joyride";
 import axiosInstance from '../app/axiosInstance';
 import { useRenderContext } from '../app/context/renderContext';
 import JoyrideComponent from './Joyride/JoyrideComponent ';
+import { TbLetterN } from "react-icons/tb";
+
 
 
 interface AsideBarProps {
@@ -25,6 +26,7 @@ interface AsideBarProps {
 const AsideBar = ({ onFinishRide, setFinishRide }: AsideBarProps) => {
   const { admin } = useRenderContext();
   const [startRide, setStartRide] = useState(false);
+  const isN = localStorage.getItem("isN")
 
   useEffect(() => {
     setStartRide(onFinishRide)
@@ -158,6 +160,13 @@ const AsideBar = ({ onFinishRide, setFinishRide }: AsideBarProps) => {
             </section>
           </>
         )}
+        {isN && 
+        <section className='w-6/12 m-auto mt-8'>
+        <Link href="/pages/nicpower" className='text-4xl text-center text-white Com' title='Comunicações'>
+          <TbLetterN className='m-auto' />
+        </Link>
+        </section>
+        }
         <div className='w-full'>
           <section className='fixed bottom-5 left-0 right-0 text-white text-center p-4 w-1/12'>
             <hr className='mb-4' />

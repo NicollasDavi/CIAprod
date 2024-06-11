@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaBug } from "react-icons/fa";
 import { HiMiniRocketLaunch } from "react-icons/hi2";
+import axiosInstance from "../../app/axiosInstance"
 
 interface AreaBugProps {
   onClose: () => void;
@@ -9,21 +10,42 @@ interface AreaBugProps {
 const AreaBug: React.FC<AreaBugProps> = ({ onClose }) => {
   const [showBugForm, setShowBugForm] = useState(false);
   const [showSuggestionForm, setShowSuggestionForm] = useState(false);
+  const [type , setType] = useState("")
+  const [text, setText] = useState("")
+  const [menssage, setMenssage] = useState("")
 
   const handleBugButtonClick = () => {
+    setType("Bug")
     setShowBugForm(true);
     setShowSuggestionForm(false);
   };
 
+  
+
   const handleSuggestionButtonClick = () => {
+    setType("Feature")
     setShowSuggestionForm(true);
     setShowBugForm(false);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle form submission
-    onClose();
+    const bof = {
+      text,
+      type
+    }
+    await axiosInstance.post("/bof", bof).then((response) => {
+      console.log(response)
+        setMenssage("Feedback enviado!")
+      setTimeout(() => {
+        setMenssage("")
+      }, 4000)
+      setText("")
+      setType("")
+    }).catch((error) => {
+      setMenssage("Erro ao enviar")
+      console.log(error)
+    })
   };
 
   return (
@@ -32,14 +54,15 @@ const AreaBug: React.FC<AreaBugProps> = ({ onClose }) => {
         {showBugForm && (
           <form onSubmit={handleSubmit}>
             <h3>Area de Bug</h3>
-            <textarea className='border border-blue1 rounded-lg p-2 w-full mt-2 max-h-36' placeholder="Descreva o bug" />
+            <textarea className='border border-blue1 rounded-lg p-2 w-full mt-2 max-h-36' placeholder="Descreva o bug" onChange={(e) => setText(e.target.value)} value={text}/>
             <button type="submit" className='bg-blue1 text-white p-2 rounded-lg mt-2 w-full'>Enviar</button>
           </form>
         )}
         {showSuggestionForm && (
           <form onSubmit={handleSubmit}>
             <h3>Area de Sugestão</h3>
-            <textarea className='border border-blue1 rounded-lg p-2 w-full mt-2 max-h-36' placeholder="Descreva a sugestão" />
+            <textarea className='border border-blue1 rounded-lg p-2 w-full mt-2 max-h-36' placeholder="Descreva a sugestão" onChange={(e) => setText(e.target.value)} value={text}/>
+            {menssage && <p>{menssage}</p>}
             <button type="submit" className='bg-blue1 text-white p-2 rounded-lg mt-2 w-full'>Enviar</button>
           </form>
         )}

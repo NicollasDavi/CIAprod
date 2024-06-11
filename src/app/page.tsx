@@ -34,6 +34,7 @@ export default function Home() {
         localStorage.setItem('admin', response.data.ADM)
         localStorage.setItem('matricula', response.data.MAT)
         localStorage.setItem('nome', response.data.USER)
+        localStorage.setItem('isN', response.data.ISN)
         const redirectUrl = response.data.URL; 
       router.push(redirectUrl); 
       })
