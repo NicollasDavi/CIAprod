@@ -96,24 +96,36 @@ const Page = () => {
     }
   };
 
+  
   const handleConvertPdfToBase64 = async () => {
     if (pdfFile) {
-      setLoading(true);
-      setError(null);
-      try {
-        const base64String = await convertFileToBase64(pdfFile);
-        console.log(base64String)
-        await axiosInstance.put("/pdf", base64String);
-        fetchPdf();
-        setPdfFile(null);
-      } catch (error) {
-        console.error('Erro ao converter arquivo para base64:', error);
-        setError('Erro ao converter arquivo para base64');
-      } finally {
-        setLoading(false);
-      }
+        setLoading(true);
+        setError(null);
+        try {
+            const formData = new FormData();
+            formData.append('pdf', pdfFile);
+    
+            await axiosInstance.put("/pdf", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            
+            fetchPdf();
+            setPdfFile(null);
+        } catch (error) {
+            console.error('Erro ao enviar arquivo PDF:', error);
+            setError('Erro ao enviar arquivo PDF');
+        } finally {
+            setLoading(false);
+        }
+    } else {
+        console.error('Nenhum arquivo selecionado');
+        setError('Nenhum arquivo selecionado');
     }
-  };
+};
+
+  
   
 
   const handleDisable = async () => {
