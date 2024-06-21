@@ -18,7 +18,7 @@ interface DocType {
 }
 
 const Page = () => {
-    const router = useRouter()
+    const router = useRouter();
     const { matricula, ...otherProps } = useRenderContext();
     const [image, setImage] = useState<File | Blob | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +29,7 @@ const Page = () => {
     const [isNotImageOpen, setIsNotImageOpen] = useState(false);
     const [isNotImageTextOpen, setIsNotImageTextOpen] = useState(false);
     const [newTypeText, setNewTypeText] = useState("");
-    const [publica, setPublica] = useState(false)
+    const [publica, setPublica] = useState(false);
     const [doc, setDoc] = useState<{publica: boolean, userId: string ,nome: string; types: DocType[] }>({
         nome: "",
         types: [],
@@ -118,9 +118,9 @@ const Page = () => {
         }));
     }, [nome]);
 
-const cancelar = () => {
-    router.push("/pages/docs");
-}
+    const cancelar = () => {
+        router.push("/pages/docs");
+    }
 
     const env = () => {
         axiosInstance.post('/doc', doc)
@@ -132,28 +132,48 @@ const cancelar = () => {
             });
     }
 
-    const addNewType = (type: number) => {
+    const addNewType = async (type: number) => {
         const newText = newTypeText.replace(/\n\s*\n/g, '\n\n');
-        console.log("oi")
+
         if (image) {
-            convertImageToBase64(image).then(base64Image => {
-                const newType: DocType = {
-                    type: type,
-                    text: newText,
-                    img: base64Image
-                };
+            const isPdfOrWord = image.type === 'application/pdf' || image.type === 'application/msword' || image.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
-                setDoc(prevDoc => ({
-                    ...prevDoc,
-                    types: [...prevDoc.types, newType]
-                }));
+            if (isPdfOrWord) {
+                // Enviar arquivo PDF ou Word para a rota /arq
+                const formData = new FormData();
+                formData.append('file', image);
 
-                setNewTypeText("");
-                setImage(null);
-                closeText();
-            }).catch(error => {
-                console.error('Erro ao converter imagem para base64:', error);
-            });
+                try {
+                    await axiosInstance.post('/arq', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    console.log('Arquivo enviado com sucesso para /arq');
+                } catch (error) {
+                    console.error('Erro ao enviar arquivo para /arq:', error);
+                }
+            } else {
+                // Converter imagem para base64 e adicionar ao documento
+                convertImageToBase64(image).then(base64Image => {
+                    const newType: DocType = {
+                        type: type,
+                        text: newText,
+                        img: base64Image
+                    };
+
+                    setDoc(prevDoc => ({
+                        ...prevDoc,
+                        types: [...prevDoc.types, newType]
+                    }));
+
+                    setNewTypeText("");
+                    setImage(null);
+                    closeText();
+                }).catch(error => {
+                    console.error('Erro ao converter imagem para base64:', error);
+                });
+            }
         } else {
             const newType: DocType = {
                 type: type,
@@ -173,7 +193,6 @@ const cancelar = () => {
     };
 
     const handleSave = () => {
-        console.log(selectedNotType)
         if (selectedNotType !== null) {
             addNewType(selectedNotType);
             setSelectedNotType(null);
