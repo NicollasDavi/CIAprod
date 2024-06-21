@@ -139,7 +139,6 @@ const Page = () => {
             const isPdfOrWord = image.type === 'application/pdf' || image.type === 'application/msword' || image.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
             if (isPdfOrWord) {
-                // Enviar arquivo PDF ou Word para a rota /arq
                 const formData = new FormData();
                 formData.append('file', image);
 
@@ -154,7 +153,6 @@ const Page = () => {
                     console.error('Erro ao enviar arquivo para /arq:', error);
                 }
             } else {
-                // Converter imagem para base64 e adicionar ao documento
                 convertImageToBase64(image).then(base64Image => {
                     const newType: DocType = {
                         type: type,
