@@ -15,6 +15,7 @@ interface DocType {
     type: number;
     text: string;
     img: string;
+    arqId: string
 }
 
 const Page = () => {
@@ -123,6 +124,7 @@ const Page = () => {
     }
 
     const env = () => {
+        console.log(doc)
         axiosInstance.post('/doc', doc)
             .then(response => {
                 router.push(`/pages/usedoc/${response.data.pagina.id}`)
@@ -147,6 +149,22 @@ const Page = () => {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
+                    }).then((response: any) => {
+                        console.log(response)
+                        const newType: DocType = {
+                            type: 5,
+                            text: "",
+                            img: "",
+                            arqId: response.data.arqId
+                        };
+                        setDoc(prevDoc => ({
+                            ...prevDoc,
+                            types: [...prevDoc.types, newType]
+                        }));
+            
+                        setNewTypeText("");
+                        closeText();
+                        console.error('Nenhuma imagem selecionada.');
                     });
                     console.log('Arquivo enviado com sucesso para /arq');
                 } catch (error) {
@@ -157,7 +175,8 @@ const Page = () => {
                     const newType: DocType = {
                         type: type,
                         text: newText,
-                        img: base64Image
+                        img: base64Image,
+                        arqId : ""
                     };
 
                     setDoc(prevDoc => ({
@@ -176,7 +195,8 @@ const Page = () => {
             const newType: DocType = {
                 type: type,
                 text: newText,
-                img: ""
+                img: "",
+                arqId : ""
             };
 
             setDoc(prevDoc => ({
@@ -207,7 +227,7 @@ const Page = () => {
 
     useEffect(() => {
         console.log("Estado atualizado:", doc);
-        console.log(nome);
+        console.log(doc);
     }, [doc]);
 
     const convertImageToBase64 = (image: File | Blob) => {

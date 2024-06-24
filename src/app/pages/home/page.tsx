@@ -87,7 +87,6 @@ const Page = () => {
       <div className='w-screen pt-10'>
         <PDFViewer pdfUrl={pdf}/>
       </div>
-    
     </div>
   );
 };
