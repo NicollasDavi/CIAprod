@@ -79,19 +79,19 @@ const Header = ({ onFinishRide }: { onFinishRide: (isFinished: boolean) => void 
         >
           <h1 className='ml-5 pt-1'>Olá, {nome}!</h1>
           <div className='ml-5 text-4xl relative '>
-            {foto ? (
+            {/* {foto ? (
               <img
                 src={foto}
                 alt='User Photo'
                 className='w-10 h-10 rounded-full cursor-pointer border-2 border-blue-500 UserCard'
                 onClick={() => router.push('/pages/userinformations')}
               />
-            ) : (
+            ) : ( */}
               <FaUserCircle
                 onClick={() => router.push('/pages/userinformations')}
                 className='cursor-pointer text-gray-500 w-10 h-10 '
               />
-            )}
+            {/* )} */}
             {mostrarCard && (
               <div className='absolute top-full right-[-35px] mt-2 w-64'>
                 <div className='bg-white rounded-md overflow-hidden transition-all duration-300 shadow-blue1 shadow-xl '>
