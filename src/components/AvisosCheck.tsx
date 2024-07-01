@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../src/app/axiosInstance';
 import Notification from '../components/Notifications/Notification';
@@ -9,8 +10,8 @@ const AvisosCheck = () => {
   const [type, setType] = useState("");
   const [avisos, setAvisos] = useState<any[]>([]);
 
-
-    const fectAvisos = () => axiosInstance.get("/alerts").then(response => {
+  const fectAvisos = () => {
+    axiosInstance.get("/alerts").then(response => {
       const uniqueAlerts = response.data.filter((alert: any, index: number, self: any[]) => {
         return index === self.findIndex((a: any) => (
           a.id === alert.id
@@ -20,10 +21,11 @@ const AvisosCheck = () => {
     }).catch(error => {
       console.error("Erro ao obter os avisos:", error);
     });
-    useEffect(() => {
-      fectAvisos()
-    }, [])
-   
+  };
+
+  useEffect(() => {
+    fectAvisos();
+  }, []);
 
   const handleTypeChange = (value: string) => {
     if (selectedType === value) {
@@ -36,17 +38,17 @@ const AvisosCheck = () => {
   };
 
   const onFecth = () => {
-    fectAvisos()
-  }
+    fectAvisos();
+  };
 
   const handleEnvAlert = async () => {
     const alert = {
       title,
       text,
-      type
+      type,
     };
-    await axiosInstance.post("/alert", alert).then(response => {
-      onFecth()
+    await axiosInstance.post("/alert", alert).then(() => {
+      onFecth();
     }).catch(error => {
       console.error("Erro ao enviar alerta:", error);
     });
@@ -58,8 +60,15 @@ const AvisosCheck = () => {
       <div className="flex flex-col md:flex-row">
         <section className="w-full md:w-6/12 bg-gray-100 p-4 rounded-lg">
           {avisos.map((aviso, index) => (
-            <section className='mb-2'>
-              <Notification key={index} type={aviso.type} title={aviso.title} text={aviso.text} adm={true} id={aviso.id} onFecth={onFecth}/>
+            <section className='mb-2' key={index}>
+              <Notification
+                type={aviso.type}
+                title={aviso.title}
+                text={aviso.text}
+                adm={true}
+                id={aviso.id}
+                onFecth={onFecth}
+              />
             </section>
           ))}
         </section>
