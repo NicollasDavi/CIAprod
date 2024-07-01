@@ -18,9 +18,6 @@ export default function Home() {
     // localStorage.setItem('admin', "false")
     // setLoading(true)
     // window.location.replace('/pages/home');
-    
-   
-
 
     const newMatricula = parseInt(matricula)
     const data = {
