@@ -1,25 +1,21 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'https://15.228.38.79:29',  // Certifique-se de usar HTTPS e a porta correta
-    timeout: 15000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    withCredentials: true  // Inclui cookies e outros credenciais nas requisições
+  baseURL: 'https://cursopositivocia.com.br:29', // URL da API
+  withCredentials: true, // Permite envio de cookies e cabeçalhos de autenticação
+  headers: {
+    'Content-Type': 'application/json',
+  }
 });
 
-instance.interceptors.request.use(async config => {
-    const token = await localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
+instance.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 }, error => {
-    return Promise.reject(error);
+  return Promise.reject(error);
 });
 
 export default instance;
-
-
-
