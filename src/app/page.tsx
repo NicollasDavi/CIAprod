@@ -33,7 +33,7 @@ export default function Home() {
         localStorage.setItem('nome', response.data.USER)
         localStorage.setItem('isN', response.data.ISN)
         const redirectUrl = response.data.URL; 
-      router.push(redirectUrl); 
+        router.push("/pages/home");
       })
       .catch(error => {
           console.error('Erro:', error);
