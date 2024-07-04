@@ -32,7 +32,7 @@ export default function Home() {
         localStorage.setItem('matricula', response.data.MAT)
         localStorage.setItem('nome', response.data.USER)
         localStorage.setItem('isN', response.data.ISN)
-        const redirectUrl = response.data.URL; 
+        console.log(localStorage.getItem('isN'))
         router.push("/pages/home");
       })
       .catch(error => {
@@ -78,7 +78,7 @@ export default function Home() {
             <div className={styles.textInfo}>
               <h1 style={{fontWeight: "bolder", fontSize: "2.5rem", lineHeight: "2.5rem"}}>CIA</h1>
               <h1 style={{fontWeight: "bolder", fontSize: "2.5rem", lineHeight: "2.5rem", marginTop: "0.5rem"}}>Curso Positivo</h1>
-              <p  style={{width: "83.333333%", margin: "auto", marginTop: "3rem"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam maecenas mi non sed ut odio. Non, justo, sed facilisi et. Eget viverra urna, vestibulum egestas faucibus egestas. Sagittis nam velit volutpat eu nunc.</p>
+              <p  style={{width: "83.333333%", margin: "auto", marginTop: "3rem"}}>Versão beta-teste v1</p>
             </div>
         </div>
       </div>

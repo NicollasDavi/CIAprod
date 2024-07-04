@@ -44,6 +44,7 @@ const AsideBar = ({ onFinishRide, setFinishRide }: AsideBarProps) => {
         console.error('Erro:', error);
       });
   };
+  console.log("isN é: " ,localStorage.getItem('isN'))
 
   const [{ steps }, setState] = useState({
 
@@ -160,7 +161,8 @@ const AsideBar = ({ onFinishRide, setFinishRide }: AsideBarProps) => {
             </section>
           </>
         )}
-        {isN && 
+        
+        {isN  && 
         <section className='w-6/12 m-auto mt-8'>
         <Link href="/pages/nicpower" className='text-4xl text-center text-white Com' title='Comunicações'>
           <TbLetterN className='m-auto' />
