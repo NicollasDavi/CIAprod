@@ -150,6 +150,8 @@ const Page = () => {
                       routeDisable={`unidade/${unidade.codigo}`}
                       onDelete={() => handleUnidadeDelete(unidade.codigo)}
                       onStatusChange={(newStatus) => handleUnidadeStatusChange(unidade.codigo, newStatus)}
+                      id={unidade.codigo}
+                      tipo='/unidade/create'
                     />
                   ))}
                 </section>
@@ -180,6 +182,8 @@ const Page = () => {
                       routeDisable={`curso/${curso.id}`}
                       onDelete={() => handleCursoDelete(curso.id)}
                       onStatusChange={(newStatus) => handleCursoStatusChange(curso.id, newStatus)}
+                      id={curso.id}
+                      tipo={"cursocreate"}
                     />
                   ))}
                 </section>
@@ -210,6 +214,8 @@ const Page = () => {
                       routeDisable={`valor/${valor.id}`}
                       onDelete={() => handleValorDelete(valor.id)}
                       onStatusChange={(newStatus) => handleValorStatusChange(valor.id, newStatus)}
+                      id={valor.id}
+                      tipo="valor"
                     />
                   ))}
                 </section>

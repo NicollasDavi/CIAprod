@@ -6,6 +6,7 @@ import axiosInstance from '@/src/app/axiosInstance';
 import { GiSightDisabled } from "react-icons/gi";
 import { FaEye } from "react-icons/fa";
 import ConfirmationModal from '@/src/components/ConfirmationModal';
+import { useRouter } from 'next/navigation';
 
 interface ListBarProps {
   nome: string;
@@ -16,7 +17,9 @@ interface ListBarProps {
   route: string;
   active: boolean;
   routeDisable: string;
+  id: string
   onDelete: () => void;
+  tipo: string
   onStatusChange: (newStatus: boolean) => void;
 }
 
@@ -30,7 +33,9 @@ const ListBar: React.FC<ListBarProps> = ({
   active,
   routeDisable,
   onDelete,
-  onStatusChange
+  id,
+  tipo,
+  onStatusChange,
 }) => {
   const formatDate = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -43,6 +48,7 @@ const ListBar: React.FC<ListBarProps> = ({
     return new Intl.DateTimeFormat('pt-BR', options).format(date);
   };
 
+  const router = useRouter()
   const [message, setMessage] = useState<string>('');
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
@@ -77,6 +83,11 @@ const ListBar: React.FC<ListBarProps> = ({
       });
   };
 
+
+  const redirectPage = () => {
+    router.push(`/pages/${tipo}/${id}`)
+  }
+
   const handleEnable = () => {
     axiosInstance
       .patch(`/${routeDisable}/1`)
@@ -100,7 +111,7 @@ const ListBar: React.FC<ListBarProps> = ({
           <h1 className='md:hidden'>{formatDate(new Date(date))}</h1>
         </div>
         <div className='flex flex-row w-2/12 justify-around'>
-          <button className="p-1 rounded-lg bg-blue-500 ml-10 text-white mr-3 text-lg">
+          <button className="p-1 rounded-lg bg-blue-500 ml-10 text-white mr-3 text-lg" onClick={redirectPage}>
             <BiSolidEdit />
           </button>
           {!active ? (

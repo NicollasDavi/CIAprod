@@ -10,6 +10,7 @@
     "export": "next export"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.2",
     "@material-tailwind/react": "^2.1.9",
     "@nextui-org/react": "^2.3.6",
     "@reactour/tour": "^3.6.2",
