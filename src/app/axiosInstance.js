@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://cursopositivocia.com.br:29', // URL da API
-  // baseURL: 'http://localhost:4000', // URL da API
+  // baseURL: 'https://cursopositivocia.com.br:29', // URL da API
+  baseURL: 'http://localhost:4000', // URL da API
   withCredentials: true, // Permite envio de cookies e cabeçalhos de autenticação
   headers: {
     'Content-Type': 'application/json',

@@ -7,9 +7,10 @@ interface Props {
   setToken: (value: string) => void;
   admin: boolean;
   setAdmin: (value: boolean) => void;
+  isN: boolean;
+  setIsN: (value: boolean) => void;
   matricula: string;
   setMatricula: (value: string) => void;
-
 }
 
 const renderContext = createContext<Props | undefined>(undefined);
@@ -25,21 +26,24 @@ export const useRenderContext = () => {
 export const RenderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [token, setToken] = useState('');
   const [admin, setAdmin] = useState(false);
+  const [isN, setIsN] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [matricula, setMatricula] = useState('')
+  const [matricula, setMatricula] = useState('');
 
   useEffect(() => {
     const fetchToken = async () => {
       const tokenLocal = localStorage.getItem('token');
       const mat = localStorage.getItem('matricula');
       const isAdmin = localStorage.getItem('admin');
+      const isNl = localStorage.getItem('isN');
 
       if (tokenLocal) {
         setToken(tokenLocal);
         setAdmin(isAdmin === 'true');
+        setIsN(isNl === 'true');
         if (mat) {
           setMatricula(mat);
-        }        
+        }
       } else {
         window.location.replace('/');
       }
@@ -77,7 +81,7 @@ export const RenderProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   }, []);
 
   return (
-    <renderContext.Provider value={{ token, setToken, admin, setAdmin, matricula, setMatricula }}>
+    <renderContext.Provider value={{ token, setToken, admin, setAdmin, matricula, setMatricula, isN, setIsN }}>
       {loading ? <Loader /> : children}
     </renderContext.Provider>
   );

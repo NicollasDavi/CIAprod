@@ -20,7 +20,8 @@ const AreaBug: React.FC<AreaBugProps> = ({ onClose }) => {
     setShowSuggestionForm(false);
   };
 
-  
+  const userId = localStorage.getItem('matricula');
+
 
   const handleSuggestionButtonClick = () => {
     setType("Feature")
@@ -32,7 +33,8 @@ const AreaBug: React.FC<AreaBugProps> = ({ onClose }) => {
     event.preventDefault();
     const bof = {
       text,
-      type
+      type,
+      userId
     }
     await axiosInstance.post("/bof", bof).then((response) => {
       console.log(response)
