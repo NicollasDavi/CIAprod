@@ -25,7 +25,7 @@ export default function RootLayout({
           <Header onFinishRide={setStateOfRide}/>
           <AsideBar onFinishRide={stateOfRide} setFinishRide={setStateOfRide}/>
           <MobileAsideBar />
-          <div className="pt-5">{children}<BugAreaWrapper /></div>
+          <div className="pt-5 overflow-x-hidden">{children}<BugAreaWrapper /></div>
         </RenderProvider>
       </body>
     </html>
