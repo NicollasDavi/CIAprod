@@ -40,7 +40,6 @@ const Page = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    // Função para alternar a visibilidade pública do documento
     const handleSetPublica = () => {
         setPublica(!publica);
         setDoc(prevDoc => ({
@@ -49,16 +48,10 @@ const Page = () => {
         }));
     };
 
-    // Função para abrir o modal
     const openModal = () => setIsModalOpen(true);
-
-    // Função para fechar o modal
     const closeModal = () => setIsModalOpen(false);
-
-    // Função para fechar a seção de texto
     const closeText = () => setOpen(0);
 
-    // Função para converter a imagem para base64
     const convertImageToBase64 = (image: File | Blob) => {
         return new Promise<string>((resolve, reject) => {
             const reader = new FileReader();
@@ -74,14 +67,12 @@ const Page = () => {
         });
     };
 
-    // Efeito para atualizar o estado do documento com base na imagem
     useEffect(() => {
         if (image) {
             convertImageToBase64(image);
         }
     }, [image]);
 
-    // Efeito para alternar entre os diferentes tipos de anotações
     useEffect(() => {
         switch (open) {
             case 1:
@@ -119,7 +110,6 @@ const Page = () => {
         }
     }, [open]);
 
-    // Função para adicionar indentação ao texto
     const renderParagraphsWithIndentation = (text: string) => {
         const paragraphs = text.split('\n');
         const indentedParagraphs = paragraphs.map((paragraph, index) => {
@@ -136,7 +126,6 @@ const Page = () => {
         ));
     };
 
-    // Efeito para atualizar o estado do documento com base no nome e na matrícula do usuário
     useEffect(() => {
         setDoc(prevDoc => ({
             ...prevDoc,
@@ -146,14 +135,13 @@ const Page = () => {
         }));
     }, [nome, matricula, publica]);
 
-    // Função para cancelar a operação
     const cancelar = () => {
         router.push("/pages/docs");
     };
 
-    // Função para enviar o documento para o backend
     const env = () => {
         setIsLoading(true);
+        console.log(doc);
         axiosInstance.post('/doc', doc)
             .then(response => {
                 if (response.data.status === 'error') {
@@ -174,7 +162,6 @@ const Page = () => {
             });
     };
 
-    // Função para adicionar um novo tipo de anotação
     const addNewType = async (type: number) => {
         const newText = newTypeText.replace(/\n\s*\n/g, '\n\n');
 
@@ -191,16 +178,21 @@ const Page = () => {
                             'Content-Type': 'multipart/form-data'
                         }
                     });
-                    const newType: DocType = {
-                        type: 5,
-                        text: "",
-                        img: "",
-                        arqId: response.data.arqId
-                    };
-                    setDoc(prevDoc => ({
-                        ...prevDoc,
-                        types: [...prevDoc.types, newType]
-                    }));
+
+                    if (response.data.arqId) {
+                        const newType: DocType = {
+                            type: 5,
+                            text: "",
+                            img: "",
+                            arqId: response.data.arqId
+                        };
+                        setDoc(prevDoc => ({
+                            ...prevDoc,
+                            types: [...prevDoc.types, newType]
+                        }));
+                    } else {
+                        console.error('Erro: arqId não encontrado na resposta:', response);
+                    }
                 } catch (error) {
                     console.error('Erro ao enviar arquivo para /arq:', error);
                 }
@@ -241,7 +233,6 @@ const Page = () => {
         closeText();
     };
 
-    // Função para salvar o novo tipo de anotação
     const handleSave = () => {
         if (selectedNotType !== null) {
             addNewType(selectedNotType);
@@ -249,7 +240,6 @@ const Page = () => {
         }
     };
 
-    // Função para remover um tipo de anotação
     const removeItem = (indexToRemove: number) => {
         setDoc(prevDoc => {
             const updatedTypes = prevDoc.types.filter((_, index) => index !== indexToRemove);
